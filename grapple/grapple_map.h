@@ -3,7 +3,7 @@
 
 enum
 {
-    THRUST_ADJACENT_DIFFERENCE,
+    THRUST_ADJACENT_DIFFERENCE = 1<<20,
 
     THRUST_LOWER_BOUND,
     THRUST_UPPER_BOUND,
@@ -111,11 +111,13 @@ enum
     THRUST_UNIQUE_COPY,
     THRUST_UNIQUE_BY_KEY,
     THRUST_UNIQUE_BY_KEY_COPY,
+
+    THRUST_LAST_KEY,
 };
 
-struct thrust_mapper
+class grapple_mapper
 {
-    static std::map<std::string,int> create_map(void)
+    std::map<std::string,int> create_map(void)
     {
         std::map<std::string,int> m;
 
@@ -231,7 +233,7 @@ struct thrust_mapper
         return m;
     }
 
-    static std::map<int,std::string> create_reverse_map(void)
+    std::map<int,std::string> create_reverse_map(void)
     {
         std::map<int,std::string> m;
 
@@ -241,9 +243,28 @@ struct thrust_mapper
         return m;
     }
 
-    static const std::map<std::string,int> thrustMap;
-    static const std::map<int,std::string> thrustReverseMap;
+  public:
+
+    grapple_mapper(void)
+    {
+      thrustMap = create_map();
+      thrustReverseMap = create_reverse_map();
+    }
+
+    void insert(int index, const std::string& name)
+    {
+        thrustReverseMap.insert(std::pair<int,std::string>(index, name));
+    }
+
+    std::string find(int index)
+    {
+        return thrustReverseMap.find(index)->second;
+    }
+
+  private:
+
+    std::map<std::string,int> thrustMap;
+    std::map<int,std::string> thrustReverseMap;
 };
 
-const std::map<std::string,int> thrust_mapper::thrustMap = thrust_mapper::create_map();
-const std::map<int,std::string> thrust_mapper::thrustReverseMap = thrust_mapper::create_reverse_map();
+static grapple_mapper grapple_map;

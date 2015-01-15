@@ -44,7 +44,7 @@ class grapple_data
     friend std::ostream &operator<<( std::ostream &output,
                                      const grapple_data &data )
     {
-        std::string name(thrust_mapper::thrustReverseMap.find(data.func_id)->second);
+        std::string name(grapple_map.find(data.func_id));
 
         output << "(on stream " << data.stream << ") "
                << std::string(data.stack_frame, '\t')
