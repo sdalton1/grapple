@@ -97,74 +97,52 @@ struct evens_before_odds
 
 int main(void)
 {
-    size_t N = 1<<20;
+    size_t N = 1<<18;
 
     grapple_system grapple;
 
-    /* std::cout << "sorting integers\n"; */
-    /* { */
-    /*     thrust::device_vector<int> keys(N); */
-    /*     initialize(keys); */
-    /*     print(keys); */
-    /*     thrust::sort(grapple, keys.begin(), keys.end()); */
-    /*     print(keys); */
-    /* } */
-    /*  */
-    /* std::cout << "\nsorting integers (descending)\n"; */
-    /* { */
-    /*     thrust::device_vector<int> keys(N); */
-    /*     initialize(keys); */
-    /*     print(keys); */
-    /*     thrust::sort(grapple, keys.begin(), keys.end(), thrust::greater<int>()); */
-    /*     print(keys); */
-    /* } */
-    /*  */
-    /* std::cout << "\nsorting integers (user-defined comparison)\n"; */
-    /* { */
-    /*     thrust::device_vector<int> keys(N); */
-    /*     initialize(keys); */
-    /*     print(keys); */
-    /*     thrust::sort(grapple, keys.begin(), keys.end(), evens_before_odds()); */
-    /*     print(keys); */
-    /* } */
-    /*  */
-    /* std::cout << "\nsorting floats\n"; */
-    /* { */
-    /*     thrust::device_vector<float> keys(N); */
-    /*     initialize(keys); */
-    /*     print(keys); */
-    /*     thrust::sort(grapple, keys.begin(), keys.end()); */
-    /*     print(keys); */
-    /* } */
-    /*  */
-    /* std::cout << "\nsorting pairs\n"; */
-    /* { */
-    /*     thrust::device_vector< thrust::pair<int,int> > keys(N); */
-    /*     initialize(keys); */
-    /*     print(keys); */
-    /*     thrust::sort(grapple, keys.begin(), keys.end()); */
-    /*     print(keys); */
-    /* } */
+    {
+        thrust::device_vector<int> keys(N);
+        initialize(keys);
+        thrust::sort(grapple, keys.begin(), keys.end());
+    }
 
-    std::cout << "\nkey-value sorting\n";
+    {
+        thrust::device_vector<int> keys(N);
+        initialize(keys);
+        thrust::sort(grapple, keys.begin(), keys.end(), thrust::greater<int>());
+    }
+
+    {
+        thrust::device_vector<int> keys(N);
+        initialize(keys);
+        thrust::sort(grapple, keys.begin(), keys.end(), evens_before_odds());
+    }
+
+    {
+        thrust::device_vector<float> keys(N);
+        initialize(keys);
+        thrust::sort(grapple, keys.begin(), keys.end());
+    }
+
+    {
+        thrust::device_vector< thrust::pair<int,int> > keys(N);
+        initialize(keys);
+        thrust::sort(grapple, keys.begin(), keys.end());
+    }
+
+    {
+        thrust::device_vector<int> keys(N);
+        thrust::device_vector<int> values(N);
+        thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin());
+    }
+
     {
         thrust::device_vector<int> keys(N);
         thrust::device_vector<int> values(N);
         initialize(keys, values);
-        /* print(keys, values); */
-        thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin());
-        /* print(keys, values); */
+        thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin(), thrust::greater<int>());
     }
-
-    /* std::cout << "\nkey-value sorting (descending)\n"; */
-    /* { */
-    /*     thrust::device_vector<int> keys(N); */
-    /*     thrust::device_vector<int> values(N); */
-    /*     initialize(keys, values); */
-    /*     print(keys, values); */
-    /*     thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin(), thrust::greater<int>()); */
-    /*     print(keys, values); */
-    /* } */
 
     grapple.print();
 

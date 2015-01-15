@@ -28,8 +28,9 @@
 
 #include "grapple_map.h"
 
-struct grapple_data
+class grapple_data
 {
+  public:
     int   func_id;
     int   stack_frame;
     int   mem_size;
@@ -37,9 +38,24 @@ struct grapple_data
     cudaStream_t stream;
 
     grapple_data(void) : func_id(-1), stack_frame(0), mem_size(0), time(0) {}
+
+    friend std::ostream &operator<<( std::ostream &output,
+                                     const grapple_data &data )
+    {
+        std::string name(thrust_mapper::thrustReverseMap.find(data.func_id)->second);
+
+        output << "(on stream " << data.stream << ") "
+               << std::string(data.stack_frame, '\t')
+               << std::setw(23) << name           << " : "
+               << std::setw( 8) << data.time      << " (ms), allocated : "
+               << std::setw(10) << data.mem_size  << " bytes";
+
+        return output;
+    }
 };
 
-struct grapple_system : public thrust::system::cuda::detail::execute_on_stream_base<grapple_system>
+struct grapple_system
+  : public thrust::system::cuda::detail::execute_on_stream_base<grapple_system>
 {
 private:
 
@@ -112,20 +128,7 @@ public:
         std::cout << std::left;
 
         for(size_t i = 0; i < data.size(); i++)
-        {
-            int func_index  = data[i].func_id;
-            int stack_frame = data[i].stack_frame;
-            int mem_size    = data[i].mem_size;
-            float exec_time = data[i].time;
-            size_t stream   = size_t(data[i].stream);
-            std::string name(thrust_mapper::thrustReverseMap.find(func_index)->second);
-
-            std::cout << "[" << i << "](on stream " << stream << ") "
-                      << std::string(stack_frame, '\t')
-                      << std::setw(23) << name      << " : "
-                      << std::setw( 8) << exec_time << " (ms), allocated : "
-                      << std::setw(10) << mem_size  << " bytes" << std::endl;
-        }
+            std::cout << "[" << i << "]" << data[i] << std::endl;
     }
 };
 
