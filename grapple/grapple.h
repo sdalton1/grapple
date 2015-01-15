@@ -17,14 +17,16 @@
 #include <cuda.h>
 
 #include <thrust/execution_policy.h>
+#include <thrust/host_vector.h>
 
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
 
+#include <cassert>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <map>
-#include <cassert>
 
 #include "grapple_map.h"
 

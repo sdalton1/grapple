@@ -12,6 +12,7 @@ useful for tuning the performance of complex Thrust-based libraries.
 #include <grapple/grapple.h>
 
 #include <thrust/device_vector.h>
+#include <thrust/random.h>
 #include <thrust/sort.h>
 
 void initialize(thrust::device_vector<float>& v)
