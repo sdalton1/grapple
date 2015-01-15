@@ -26,7 +26,7 @@ void uninitialized_fill(grapple_system &exec,
                         ForwardIterator last,
                         const T &x)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_UNINITIALIZED_FILL);
     ForwardIterator ret = thrust::uninitialized_fill(exec.policy(), first, last, x);
     exec.stop();
 
@@ -40,7 +40,7 @@ ForwardIterator uninitialized_fill_n(grapple_system &exec,
                                      Size n,
                                      const T &x)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_UNINITIALIZED_FILL_N);
     ForwardIterator ret = thrust::uninitialized_fill_n(exec.policy(), first, n, x);
     exec.stop();
 

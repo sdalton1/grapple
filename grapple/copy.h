@@ -25,7 +25,7 @@ OutputIterator copy(grapple_system &exec,
                     InputIterator last,
                     OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COPY);
     OutputIterator ret = thrust::copy(exec.policy(), first, last, result);
     exec.stop();
 
@@ -38,7 +38,7 @@ OutputIterator copy_n(grapple_system &exec,
                       Size n,
                       OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COPY_N);
     OutputIterator ret = thrust::copy_n(exec.policy(), first, n, result);
     exec.stop();
 
@@ -52,7 +52,7 @@ OutputIterator copy_if(grapple_system &exec,
                        OutputIterator result,
                        Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COPY_IF);
     OutputIterator ret = thrust::copy_if(exec.policy(), first, last, result, pred);
     exec.stop();
 
@@ -67,7 +67,7 @@ OutputIterator copy_if(grapple_system &exec,
                        OutputIterator result,
                        Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COPY_IF);
     OutputIterator ret = thrust::copy_if(exec.policy(), first, last, stencil, result, pred);
     exec.stop();
 

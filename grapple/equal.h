@@ -22,7 +22,7 @@
 template<typename InputIterator1, typename InputIterator2>
 bool equal(grapple_system &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EQUAL);
     bool ret = equal(exec.policy(), first1, last1, first2);
     exec.stop();
 
@@ -34,7 +34,7 @@ bool equal(grapple_system &exec,
            InputIterator1 first1, InputIterator1 last1,
            InputIterator2 first2, BinaryPredicate binary_pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EQUAL);
     bool ret = equal(exec.policy(), first1, last1, first2, binary_pred);
     exec.stop();
 

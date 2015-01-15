@@ -29,7 +29,7 @@ OutputIterator merge(grapple_system &exec,
                      InputIterator2 last2,
                      OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MERGE);
     OutputIterator ret = thrust::merge(exec.policy(), first1, last1, first2, last2, result);
     exec.stop();
 
@@ -48,7 +48,7 @@ OutputIterator merge(grapple_system &exec,
                      OutputIterator result,
                      StrictWeakCompare comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MERGE);
     OutputIterator ret = thrust::merge(exec.policy(), first1, last1, first2, last2, result, comp);
     exec.stop();
 
@@ -64,7 +64,7 @@ merge_by_key(grapple_system &exec,
              OutputIterator1 keys_result,
              OutputIterator2 values_result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MERGE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::merge_by_key(exec.policy(),
                                                                              keys_first1, keys_last1,
                                                                              keys_first2, keys_last2,
@@ -84,7 +84,7 @@ merge_by_key(grapple_system &exec,
              OutputIterator2 values_result,
              Compare comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MERGE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::merge_by_key(exec.policy(),
                                                                              keys_first1, keys_last1,
                                                                              keys_first2, keys_last2,

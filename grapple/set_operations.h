@@ -30,7 +30,7 @@ OutputIterator set_difference(grapple_system &exec,
                               InputIterator2                                              last2,
                               OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_DIFFERENCE);
     OutputIterator ret = thrust::set_difference(exec.policy(), first1, last1, first2, last2, result);
     exec.stop();
 
@@ -49,7 +49,7 @@ OutputIterator set_difference(grapple_system &exec,
                               OutputIterator                                              result,
                               StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_DIFFERENCE);
     OutputIterator ret = thrust::set_difference(exec.policy(), first1, last1, first2, last2, result, comp);
     exec.stop();
 
@@ -66,7 +66,7 @@ OutputIterator set_intersection(grapple_system &exec,
                                 InputIterator2                                              last2,
                                 OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_INTERSECTION);
     OutputIterator ret = thrust::set_intersection(exec.policy(), first1, last1, first2, last2, result);
     exec.stop();
 
@@ -85,7 +85,7 @@ OutputIterator set_intersection(grapple_system &exec,
                                 OutputIterator                                              result,
                                 StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_INTERSECTION);
     OutputIterator ret = thrust::set_intersection(exec.policy(), first1, last1, first2, last2, result, comp);
     exec.stop();
 
@@ -102,7 +102,7 @@ OutputIterator set_symmetric_difference(grapple_system &exec,
                                         InputIterator2                                              last2,
                                         OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_SYMMETRIC_DIFFERENCE);
     OutputIterator ret = thrust::set_symmetric_difference(exec.policy(), first1, last1, first2, last2, result);
     exec.stop();
 
@@ -121,7 +121,7 @@ OutputIterator set_symmetric_difference(grapple_system &exec,
                                         OutputIterator                                              result,
                                         StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_SYMMETRIC_DIFFERENCE);
     OutputIterator ret = thrust::set_symmetric_difference(exec.policy(), first1, last1, first2, last2, result, comp);
     exec.stop();
 
@@ -138,7 +138,7 @@ OutputIterator set_union(grapple_system &exec,
                          InputIterator2                                              last2,
                          OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_UNION);
     OutputIterator ret = thrust::set_union(exec.policy(), first1, last1, first2, last2, result);
     exec.stop();
 
@@ -157,7 +157,7 @@ OutputIterator set_union(grapple_system &exec,
                          OutputIterator                                              result,
                          StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_UNION);
     OutputIterator ret = thrust::set_union(exec.policy(), first1, last1, first2, last2, result, comp);
     exec.stop();
 
@@ -181,7 +181,7 @@ set_difference_by_key(grapple_system &exec,
                       OutputIterator1                                             keys_result,
                       OutputIterator2                                             values_result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_DIFFERENCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_difference_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result);
@@ -210,7 +210,7 @@ set_difference_by_key(grapple_system &exec,
                       OutputIterator2                                             values_result,
                       StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_DIFFERENCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_difference_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result, comp);
@@ -235,7 +235,7 @@ set_intersection_by_key(grapple_system &exec,
                         OutputIterator1                                             keys_result,
                         OutputIterator2                                             values_result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_INTERSECTION_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_intersection_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, keys_result, values_result);
@@ -262,7 +262,7 @@ set_intersection_by_key(grapple_system &exec,
                         OutputIterator2                                             values_result,
                         StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_INTERSECTION_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_intersection_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, keys_result, values_result, comp);
@@ -289,7 +289,7 @@ set_symmetric_difference_by_key(grapple_system &exec,
                                 OutputIterator1                                             keys_result,
                                 OutputIterator2                                             values_result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_SYMMETRIC_DIFFERENCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_symmetric_difference_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result);
@@ -317,7 +317,7 @@ set_symmetric_difference_by_key(grapple_system &exec,
                                 OutputIterator2                                             values_result,
                                 StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_SYMMETRIC_DIFFERENCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_symmetric_difference_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result, comp);
@@ -343,7 +343,7 @@ set_union_by_key(grapple_system &exec,
                  OutputIterator1                                             keys_result,
                  OutputIterator2                                             values_result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_UNION_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_union_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result);
@@ -373,7 +373,7 @@ set_union_by_key(grapple_system &exec,
                  OutputIterator2                                             values_result,
                  StrictWeakCompare                                           comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SET_UNION_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::set_union_by_key(exec.policy(),
                                     keys_first1, keys_last1, keys_first2, keys_last2,
                                     values_first1, values_first2, keys_result, values_result, comp);

@@ -24,7 +24,7 @@ void reverse(grapple_system &exec,
              BidirectionalIterator first,
              BidirectionalIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REVERSE);
     thrust::reverse(exec.policy(), first, last);
     exec.stop();
 }
@@ -35,7 +35,7 @@ OutputIterator reverse_copy(grapple_system &exec,
                             BidirectionalIterator last,
                             OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REVERSE_COPY);
     OutputIterator ret = thrust::reverse_copy(exec.policy(), first, last, result);
     exec.stop();
 

@@ -28,7 +28,7 @@ OutputIterator gather(grapple_system &exec,
                       RandomAccessIterator                                        input_first,
                       OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_GATHER);
     OutputIterator ret = thrust::gather(exec.policy(), map_first, map_last, input_first, result);
     exec.stop();
 
@@ -46,7 +46,7 @@ OutputIterator gather_if(grapple_system &exec,
                          RandomAccessIterator                                        input_first,
                          OutputIterator                                              result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_GATHER_IF);
     OutputIterator ret = thrust::gather_if(exec.policy(), map_first, map_last, stencil, input_first, result);
     exec.stop();
 
@@ -66,7 +66,7 @@ OutputIterator gather_if(grapple_system &exec,
                          OutputIterator                                              result,
                          Predicate                                                   pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_GATHER_IF);
     OutputIterator ret = thrust::gather_if(exec.policy(), map_first, map_last, stencil, input_first, result, pred);
     exec.stop();
 

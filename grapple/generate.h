@@ -27,7 +27,7 @@ void generate(grapple_system &exec,
               ForwardIterator last,
               Generator gen)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_GENERATE);
     thrust::generate(exec.policy(), first, last, gen);
     exec.stop();
 }
@@ -41,7 +41,7 @@ OutputIterator generate_n(grapple_system &exec,
                           Size n,
                           Generator gen)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_GENERATE_N);
     OutputIterator ret = thrust::generate_n(exec.policy(), first, n, gen);
     exec.stop();
 

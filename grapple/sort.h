@@ -29,7 +29,7 @@ void sort(grapple_system &exec,
           RandomAccessIterator first,
           RandomAccessIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SORT);
     thrust::sort(exec.policy(), first, last);
     exec.stop();
 }
@@ -41,7 +41,7 @@ void sort(grapple_system &exec,
           RandomAccessIterator last,
           StrictWeakOrdering comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SORT);
     thrust::sort(exec.policy(), first, last, comp);
     exec.stop();
 }
@@ -51,7 +51,7 @@ void stable_sort(grapple_system &exec,
                  RandomAccessIterator first,
                  RandomAccessIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_STABLE_SORT);
     thrust::stable_sort(exec.policy(), first, last);
     exec.stop();
 }
@@ -63,7 +63,7 @@ void stable_sort(grapple_system &exec,
                  RandomAccessIterator last,
                  StrictWeakOrdering comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_STABLE_SORT);
     thrust::stable_sort(exec.policy(), first, last, comp);
     exec.stop();
 }
@@ -80,7 +80,7 @@ void sort_by_key(grapple_system &exec,
                  RandomAccessIterator1 keys_last,
                  RandomAccessIterator2 values_first)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SORT_BY_KEY);
     thrust::sort_by_key(exec.policy(), keys_first, keys_last, values_first);
     exec.stop();
 }
@@ -94,7 +94,7 @@ void sort_by_key(grapple_system &exec,
                  RandomAccessIterator2 values_first,
                  StrictWeakOrdering comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SORT_BY_KEY);
     thrust::sort_by_key(exec.policy(), keys_first, keys_last, values_first, comp);
     exec.stop();
 }
@@ -106,7 +106,7 @@ void stable_sort_by_key(grapple_system &exec,
                         RandomAccessIterator1 keys_last,
                         RandomAccessIterator2 values_first)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_STABLE_SORT_BY_KEY);
     thrust::stable_sort_by_key(exec.policy(), keys_first, keys_last, values_first);
     exec.stop();
 }
@@ -120,7 +120,7 @@ void stable_sort_by_key(grapple_system &exec,
                         RandomAccessIterator2 values_first,
                         StrictWeakOrdering comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_STABLE_SORT_BY_KEY);
     thrust::stable_sort_by_key(exec.policy(), keys_first, keys_last, values_first, comp);
     exec.stop();
 }
@@ -130,7 +130,7 @@ bool is_sorted(grapple_system &exec,
                ForwardIterator first,
                ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_IS_SORTED);
     bool ret = thrust::is_sorted(exec.policy(), first, last);
     exec.stop();
 
@@ -143,7 +143,7 @@ bool is_sorted(grapple_system &exec,
                ForwardIterator last,
                Compare comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_IS_SORTED);
     bool ret = thrust::is_sorted(exec.policy(), first, last);
     exec.stop();
 
@@ -155,7 +155,7 @@ ForwardIterator is_sorted_until(grapple_system &exec,
                                 ForwardIterator first,
                                 ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_IS_SORTED_UNTIL);
     ForwardIterator ret = thrust::is_sorted_until(exec.policy(), first, last);
     exec.stop();
 
@@ -168,7 +168,7 @@ ForwardIterator is_sorted_until(grapple_system &exec,
                                 ForwardIterator last,
                                 Compare comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_IS_SORTED_UNTIL);
     ForwardIterator ret = thrust::is_sorted_until(exec.policy(), first, last, comp);
     exec.stop();
 

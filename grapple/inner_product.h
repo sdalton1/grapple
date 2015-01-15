@@ -28,7 +28,7 @@ OutputType inner_product(grapple_system &exec,
                          InputIterator2 first2,
                          OutputType init)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INNER_PRODUCT);
     OutputType ret = thrust::inner_product(exec.policy(), first1, last1, first2, init);
     exec.stop();
 
@@ -48,7 +48,7 @@ OutputType inner_product(grapple_system &exec,
                          BinaryFunction1 binary_op1,
                          BinaryFunction2 binary_op2)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INNER_PRODUCT);
     OutputType ret = thrust::inner_product(exec.policy(), first1, last1, first2, init, binary_op1, binary_op2);
     exec.stop();
 

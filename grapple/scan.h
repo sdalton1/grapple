@@ -26,7 +26,7 @@ OutputIterator inclusive_scan(grapple_system &exec,
                               InputIterator last,
                               OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INCLUSIVE_SCAN);
     OutputIterator ret = thrust::inclusive_scan(exec.policy(), first, last, result);
     exec.stop();
 
@@ -42,7 +42,7 @@ OutputIterator inclusive_scan(grapple_system &exec,
                               OutputIterator result,
                               AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INCLUSIVE_SCAN);
     OutputIterator ret = thrust::exclusive_scan(exec.policy(), first, last, result, binary_op);
     exec.stop();
 
@@ -56,7 +56,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               InputIterator last,
                               OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN);
     OutputIterator ret = thrust::exclusive_scan(exec.policy(), first, last, result);
     exec.stop();
 
@@ -72,7 +72,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               OutputIterator result,
                               T init)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN);
     OutputIterator ret = thrust::exclusive_scan(exec.policy(), first, last, result, init);
     exec.stop();
 
@@ -90,7 +90,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               T init,
                               AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN);
     OutputIterator ret = thrust::exclusive_scan(exec.policy(), first, last, result, init, binary_op);
     exec.stop();
 
@@ -106,7 +106,7 @@ OutputIterator inclusive_scan_by_key(grapple_system &exec,
                                      InputIterator2 first2,
                                      OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::inclusive_scan_by_key(exec.policy(), first1, last1, first2, result);
     exec.stop();
 
@@ -124,7 +124,7 @@ OutputIterator inclusive_scan_by_key(grapple_system &exec,
                                      OutputIterator result,
                                      BinaryPredicate binary_pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::inclusive_scan_by_key(exec.policy(), first1, last1, first2, result, binary_pred);
     exec.stop();
 
@@ -144,7 +144,7 @@ OutputIterator inclusive_scan_by_key(grapple_system &exec,
                                      BinaryPredicate binary_pred,
                                      AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_INCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::inclusive_scan_by_key(exec.policy(), first1, last1, first2, result, binary_pred, binary_op);
     exec.stop();
 
@@ -160,7 +160,7 @@ OutputIterator exclusive_scan_by_key(grapple_system &exec,
                                      InputIterator2 first2,
                                      OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::exclusive_scan_by_key(exec.policy(), first1, last1, first2, result);
     exec.stop();
 
@@ -178,7 +178,7 @@ OutputIterator exclusive_scan_by_key(grapple_system &exec,
                                      OutputIterator result,
                                      T init)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::exclusive_scan_by_key(exec.policy(), first1, last1, first2, result, init);
     exec.stop();
 
@@ -198,7 +198,7 @@ OutputIterator exclusive_scan_by_key(grapple_system &exec,
                                      T init,
                                      BinaryPredicate binary_pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::exclusive_scan_by_key(exec.policy(), first1, last1, first2, result, init, binary_pred);
     exec.stop();
 
@@ -220,7 +220,7 @@ OutputIterator exclusive_scan_by_key(grapple_system &exec,
                                      BinaryPredicate binary_pred,
                                      AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_EXCLUSIVE_SCAN_BY_KEY);
     OutputIterator ret = thrust::exclusive_scan_by_key(exec.policy(), first1, last1, first2, result, init, binary_pred, binary_op);
     exec.stop();
 

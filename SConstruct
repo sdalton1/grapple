@@ -460,8 +460,7 @@ for (host,device) in itertools.product(host_backends, device_backends):
   env.Append(LIBPATH = lib_paths(env, host, device))
 
   # assemble the name of this configuration's targets directory
-  # targets_dir = '{0}_host_{1}_device_{2}'.format(host, device, env['mode'])
-  targets_dir = './examples'
+  targets_dir = '{0}_host_{1}_device_{2}'.format(host, device, env['mode'])
 
   # allow subsidiary SConscripts to peek at the backends
   env['host_backend'] = host

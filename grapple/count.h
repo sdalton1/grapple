@@ -23,7 +23,7 @@ template<typename InputIterator, typename EqualityComparable>
 typename thrust::iterator_traits<InputIterator>::difference_type
 count(grapple_system &exec, InputIterator first, InputIterator last, const EqualityComparable& value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COUNT);
     typename thrust::iterator_traits<InputIterator>::difference_type ret =
       thrust::count(exec.policy(), first, last, value);
     exec.stop();
@@ -35,7 +35,7 @@ template<typename InputIterator, typename Predicate>
 typename thrust::iterator_traits<InputIterator>::difference_type
 count_if(grapple_system &exec, InputIterator first, InputIterator last, Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_COUNT_IF);
     typename thrust::iterator_traits<InputIterator>::difference_type ret =
       thrust::count_if(exec.policy(), first, last, pred);
     exec.stop();

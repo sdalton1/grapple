@@ -24,7 +24,7 @@ template<typename InputIterator>
 typename thrust::iterator_traits<InputIterator>::value_type
 reduce(grapple_system &exec, InputIterator first, InputIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE);
     typename thrust::iterator_traits<InputIterator>::value_type ret =
         thrust::reduce(exec.policy(), first, last);
     exec.stop();
@@ -38,7 +38,7 @@ T reduce(grapple_system &exec,
          InputIterator last,
          T init)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE);
     T ret = thrust::reduce(exec.policy(), first, last, init);
     exec.stop();
 
@@ -55,7 +55,7 @@ T reduce(grapple_system &exec,
          T init,
          BinaryFunction binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE);
     T ret = thrust::reduce(exec.policy(), first, last, init, binary_op);
     exec.stop();
 
@@ -75,7 +75,7 @@ reduce_by_key(grapple_system &exec,
               OutputIterator1 keys_output,
               OutputIterator2 values_output)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
             keys_first, keys_last, values_first, keys_output, values_output);
     exec.stop();
@@ -98,7 +98,7 @@ reduce_by_key(grapple_system &exec,
               OutputIterator2 values_output,
               BinaryPredicate binary_pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
             keys_first, keys_last, values_first, keys_output, values_output, binary_pred);
     exec.stop();
@@ -123,7 +123,7 @@ reduce_by_key(grapple_system &exec,
               BinaryPredicate binary_pred,
               BinaryFunction binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REDUCE_BY_KEY);
     thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
             keys_first, keys_last, values_first, keys_output, values_output, binary_pred, binary_op);
     exec.stop();

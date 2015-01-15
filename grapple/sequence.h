@@ -24,7 +24,7 @@ void sequence(grapple_system &exec,
               ForwardIterator first,
               ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SEQUENCE);
     thrust::sequence(exec.policy(), first, last);
     exec.stop();
 }
@@ -35,7 +35,7 @@ void sequence(grapple_system &exec,
               ForwardIterator last,
               T init)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SEQUENCE);
     thrust::sequence(exec.policy(), first, last, init);
     exec.stop();
 }
@@ -47,7 +47,7 @@ void sequence(grapple_system &exec,
               T init,
               T step)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SEQUENCE);
     thrust::sequence(exec.policy(), first, last, init, step);
     exec.stop();
 }

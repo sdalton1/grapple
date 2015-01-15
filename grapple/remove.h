@@ -27,7 +27,7 @@ ForwardIterator remove(grapple_system &exec,
                        ForwardIterator last,
                        const T &value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE);
     ForwardIterator ret = thrust::remove(exec.policy(), first, last, value);
     exec.stop();
 
@@ -43,7 +43,7 @@ OutputIterator remove_copy(grapple_system &exec,
                            OutputIterator result,
                            const T &value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE_COPY);
     OutputIterator ret = thrust::remove_copy(exec.policy(), first, last, result, value);
     exec.stop();
 
@@ -57,7 +57,7 @@ ForwardIterator remove_if(grapple_system &exec,
                           ForwardIterator last,
                           Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE_IF);
     ForwardIterator ret = thrust::remove_if(exec.policy(), first, last, pred);
     exec.stop();
 
@@ -73,7 +73,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
                               OutputIterator result,
                               Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE_COPY_IF);
     OutputIterator ret = thrust::remove_copy_if(exec.policy(), first, last, result, pred);
     exec.stop();
 
@@ -90,7 +90,7 @@ ForwardIterator remove_if(grapple_system &exec,
                           InputIterator stencil,
                           Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE_IF);
     ForwardIterator ret = thrust::remove_if(exec.policy(), first, last, stencil, pred);
     exec.stop();
 
@@ -109,7 +109,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
                               OutputIterator result,
                               Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REMOVE_COPY_IF);
     OutputIterator ret = thrust::remove_copy_if(exec.policy(), first, last, stencil, result, pred);
     exec.stop();
 

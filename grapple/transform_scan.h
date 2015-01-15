@@ -30,7 +30,7 @@ OutputIterator transform_inclusive_scan(grapple_system &exec,
                                         UnaryFunction unary_op,
                                         AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_INCLUSIVE_SCAN);
     OutputIterator ret = thrust::transform_inclusive_scan(exec.policy(), first, last, result, unary_op, binary_op);
     exec.stop();
 
@@ -50,7 +50,7 @@ OutputIterator transform_exclusive_scan(grapple_system &exec,
                                         T init,
                                         AssociativeOperator binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_EXCLUSIVE_SCAN);
     OutputIterator ret = thrust::transform_exclusive_scan(exec.policy(), first, last, result, unary_op, init, binary_op);
     exec.stop();
 

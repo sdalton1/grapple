@@ -26,7 +26,7 @@ void replace(grapple_system &exec,
              const T &old_value,
              const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE);
     thrust::replace(exec.policy(), first, last, old_value, new_value);
     exec.stop();
 }
@@ -37,7 +37,7 @@ void replace_if(grapple_system &exec,
                 Predicate pred,
                 const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE_IF);
     thrust::replace_if(exec.policy(), first, last, pred, new_value);
     exec.stop();
 }
@@ -49,7 +49,7 @@ void replace_if(grapple_system &exec,
                 Predicate pred,
                 const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE_IF);
     thrust::replace_if(exec.policy(), first, last, stencil, pred, new_value);
     exec.stop();
 }
@@ -61,7 +61,7 @@ OutputIterator replace_copy(grapple_system &exec,
                             const T &old_value,
                             const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE_COPY);
     OutputIterator ret = thrust::replace_copy(exec.policy(), first, last, result, old_value, new_value);
     exec.stop();
 
@@ -75,7 +75,7 @@ OutputIterator replace_copy_if(grapple_system &exec,
                                Predicate pred,
                                const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE_COPY_IF);
     OutputIterator ret = thrust::replace_copy_if(exec.policy(), first, last, result, pred, new_value);
     exec.stop();
 
@@ -90,7 +90,7 @@ OutputIterator replace_copy_if(grapple_system &exec,
                                Predicate pred,
                                const T &new_value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_REPLACE_COPY_IF);
     OutputIterator ret = thrust::replace_copy_if(exec.policy(), first, last, stencil, result, pred, new_value);
     exec.stop();
 

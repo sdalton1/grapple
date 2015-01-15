@@ -26,7 +26,7 @@ InputIterator for_each(grapple_system &exec,
                        InputIterator last,
                        UnaryFunction f)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_FOR_EACH);
     InputIterator ret = thrust::for_each(exec.policy(), first, last, f);
     exec.stop();
 
@@ -41,7 +41,7 @@ InputIterator for_each_n(grapple_system &exec,
                          Size n,
                          UnaryFunction f)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_FOR_EACH_N);
     InputIterator ret = thrust::for_each_n(exec.policy(), first, n, f);
     exec.stop();
 

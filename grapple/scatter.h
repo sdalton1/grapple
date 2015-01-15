@@ -29,7 +29,7 @@ void scatter(grapple_system &exec,
              InputIterator2 map,
              RandomAccessIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SCATTER);
     thrust::scatter(exec.policy(), first, last, map, result);
     exec.stop();
 }
@@ -45,7 +45,7 @@ void scatter_if(grapple_system &exec,
                 InputIterator3 stencil,
                 RandomAccessIterator output)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SCATTER_IF);
     thrust::scatter_if(exec.policy(), first, last, map, stencil, output);
     exec.stop();
 }
@@ -63,7 +63,7 @@ void scatter_if(grapple_system &exec,
                 RandomAccessIterator output,
                 Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_SCATTER_IF);
     thrust::scatter_if(exec.policy(), first, last, map, stencil, output, pred);
     exec.stop();
 }

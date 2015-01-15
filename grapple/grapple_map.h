@@ -78,11 +78,11 @@ enum
     THRUST_SET_DIFFERENCE,
     THRUST_SET_INTERSECTION,
     THRUST_SET_SYMMETRIC_DIFFERENCE,
-    THRUST_UNION,
+    THRUST_SET_UNION,
     THRUST_SET_DIFFERENCE_BY_KEY,
     THRUST_SET_INTERSECTION_BY_KEY,
     THRUST_SET_SYMMETRIC_DIFFERENCE_BY_KEY,
-    THRUST_UNION_BY_KEY,
+    THRUST_SET_UNION_BY_KEY,
 
     THRUST_SORT,
     THRUST_SORT_BY_KEY,
@@ -194,11 +194,11 @@ struct thrust_mapper
         m["set_difference"]           = THRUST_SET_DIFFERENCE;
         m["set_intersection"]         = THRUST_SET_INTERSECTION;
         m["set_symmetric_difference"] = THRUST_SET_SYMMETRIC_DIFFERENCE;
-        m["set_union"]                = THRUST_UNION;
+        m["set_union"]                = THRUST_SET_UNION;
         m["set_difference_by_key"]    = THRUST_SET_DIFFERENCE_BY_KEY;
         m["set_intersection_by_key"]  = THRUST_SET_INTERSECTION_BY_KEY;
-        m["set_symmetric_difference_by_key"] = THRUST_SET_SYMMETRIC_DIFFERENCE_BY_KEY;
-        m["set_union_by_key"]         = THRUST_UNION_BY_KEY;
+        m["set_symmetric_difference_by_key"]  = THRUST_SET_SYMMETRIC_DIFFERENCE_BY_KEY;
+        m["set_union_by_key"]                 = THRUST_SET_UNION_BY_KEY;
 
         m["sort"]                     = THRUST_SORT;
         m["sort_by_key"]              = THRUST_SORT_BY_KEY;

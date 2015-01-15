@@ -22,7 +22,7 @@
 template<typename ForwardIterator>
 ForwardIterator min_element(grapple_system &exec, ForwardIterator first, ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MIN_ELEMENT);
     ForwardIterator ret = thrust::min_element(exec.policy(), first, last);
     exec.stop();
 
@@ -32,7 +32,7 @@ ForwardIterator min_element(grapple_system &exec, ForwardIterator first, Forward
 template<typename ForwardIterator, typename BinaryPredicate>
 ForwardIterator min_element(grapple_system &exec, ForwardIterator first, ForwardIterator last, BinaryPredicate comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MIN_ELEMENT);
     ForwardIterator ret = thrust::min_element(exec.policy(), first, last, comp);
     exec.stop();
 
@@ -42,7 +42,7 @@ ForwardIterator min_element(grapple_system &exec, ForwardIterator first, Forward
 template<typename DerivedPolicy, typename ForwardIterator>
 ForwardIterator max_element(grapple_system &exec, ForwardIterator first, ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MAX_ELEMENT);
     ForwardIterator ret = thrust::max_element(exec.policy(), first, last);
     exec.stop();
 
@@ -52,7 +52,7 @@ ForwardIterator max_element(grapple_system &exec, ForwardIterator first, Forward
 template<typename ForwardIterator, typename BinaryPredicate>
 ForwardIterator max_element(grapple_system &exec, ForwardIterator first, ForwardIterator last, BinaryPredicate comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MAX_ELEMENT);
     ForwardIterator ret = thrust::max_element(exec.policy(), first, last, comp);
     exec.stop();
 
@@ -62,7 +62,7 @@ ForwardIterator max_element(grapple_system &exec, ForwardIterator first, Forward
 template<typename ForwardIterator>
 thrust::pair<ForwardIterator,ForwardIterator> minmax_element(grapple_system &exec, ForwardIterator first, ForwardIterator last)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MINMAX_ELEMENT);
     thrust::pair<ForwardIterator,ForwardIterator> ret = thrust::minmax_element(exec.policy(), first, last);
     exec.stop();
 
@@ -72,7 +72,7 @@ thrust::pair<ForwardIterator,ForwardIterator> minmax_element(grapple_system &exe
 template<typename ForwardIterator, typename BinaryPredicate>
 thrust::pair<ForwardIterator,ForwardIterator> minmax_element(grapple_system &exec, ForwardIterator first, ForwardIterator last, BinaryPredicate comp)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_MINMAX_ELEMENT);
     thrust::pair<ForwardIterator,ForwardIterator> ret = thrust::minmax_element(exec.policy(), first, last, comp);
     exec.stop();
 

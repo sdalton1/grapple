@@ -25,7 +25,7 @@ template<typename ForwardIterator, typename UnaryOperation>
                 ForwardIterator last,
                 UnaryOperation unary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TABULATE);
     thrust::tabulate(exec.policy(), first, last, unary_op);
     exec.stop();
 }

@@ -28,7 +28,7 @@ OutputIterator transform(grapple_system &exec,
                          OutputIterator result,
                          UnaryFunction op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM);
     OutputIterator ret = thrust::transform_if(exec.policy(), first, last, result, op);
     exec.stop();
 
@@ -45,7 +45,7 @@ OutputIterator transform(grapple_system &exec,
                          OutputIterator result,
                          BinaryFunction op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM);
     OutputIterator ret = thrust::transform_if(exec.policy(), first1, last1, first2, result, op);
     exec.stop();
 
@@ -62,7 +62,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              UnaryFunction op,
                              Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_IF);
     ForwardIterator ret = thrust::transform_if(exec.policy(), first, last, result, op, pred);
     exec.stop();
 
@@ -81,7 +81,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              UnaryFunction op,
                              Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_IF);
     ForwardIterator ret = thrust::transform_if(exec.policy(), first, last, stencil, result, op, pred);
     exec.stop();
 
@@ -102,7 +102,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              BinaryFunction binary_op,
                              Predicate pred)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_IF);
     ForwardIterator ret = thrust::transform_if(exec.policy(), first1, last1, first2, stencil, result, binary_op, pred);
     exec.stop();
 

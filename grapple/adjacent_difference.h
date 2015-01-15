@@ -25,7 +25,7 @@ OutputIterator adjacent_difference(grapple_system &exec,
                                    InputIterator first, InputIterator last,
                                    OutputIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_ADJACENT_DIFFERENCE);
     OutputIterator ret = thrust::adjacent_difference(exec.policy(), first, last, result);
     exec.stop();
 
@@ -38,7 +38,7 @@ OutputIterator adjacent_difference(grapple_system &exec,
                                    OutputIterator result,
                                    BinaryFunction binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_ADJACENT_DIFFERENCE);
     OutputIterator ret = thrust::adjacent_difference(exec.policy(), first, last, result, binary_op);
     exec.stop();
 

@@ -31,7 +31,7 @@ OutputType transform_reduce(grapple_system &exec,
                             OutputType init,
                             BinaryFunction binary_op)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_TRANSFORM_REDUCE);
     OutputType ret = thrust::transform_reduce(exec.policy(), first, last, unary_op, init, binary_op);
     exec.stop();
 

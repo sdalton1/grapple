@@ -25,7 +25,7 @@ void fill(grapple_system &exec,
           ForwardIterator last,
           const T &value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_FILL);
     thrust::fill(exec.policy(), first, last, value);
     exec.stop();
 }
@@ -36,7 +36,7 @@ OutputIterator fill_n(grapple_system &exec,
                       Size n,
                       const T &value)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_FILL_N);
     OutputIterator ret = thrust::fill_n(exec.policy(), first, n, value);
     exec.stop();
 

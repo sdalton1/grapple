@@ -26,7 +26,7 @@ ForwardIterator uninitialized_copy(grapple_system &exec,
                                    InputIterator last,
                                    ForwardIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_UNINITIALIZED_COPY);
     ForwardIterator ret = thrust::uninitialized_copy(exec.policy(), first, last, result);
     exec.stop();
 
@@ -39,7 +39,7 @@ ForwardIterator uninitialized_copy_n(grapple_system &exec,
                                      Size n,
                                      ForwardIterator result)
 {
-    exec.start(thrust_mapper::thrustMap.find(__FUNCTION__)->second);
+    exec.start(THRUST_UNINITIALIZED_COPY_N);
     ForwardIterator ret = thrust::uninitialized_copy_n(exec.policy(), first, n, result);
     exec.stop();
 
