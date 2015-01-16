@@ -29,7 +29,7 @@ OutputIterator transform(grapple_system &exec,
                          UnaryFunction op)
 {
     exec.start(THRUST_TRANSFORM);
-    OutputIterator ret = thrust::transform_if(exec.policy(), first, last, result, op);
+    OutputIterator ret = thrust::transform_if(thrust::cuda::par(exec), first, last, result, op);
     exec.stop();
 
     return ret;
@@ -46,7 +46,7 @@ OutputIterator transform(grapple_system &exec,
                          BinaryFunction op)
 {
     exec.start(THRUST_TRANSFORM);
-    OutputIterator ret = thrust::transform_if(exec.policy(), first1, last1, first2, result, op);
+    OutputIterator ret = thrust::transform_if(thrust::cuda::par(exec), first1, last1, first2, result, op);
     exec.stop();
 
     return ret;
@@ -63,7 +63,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              Predicate pred)
 {
     exec.start(THRUST_TRANSFORM_IF);
-    ForwardIterator ret = thrust::transform_if(exec.policy(), first, last, result, op, pred);
+    ForwardIterator ret = thrust::transform_if(thrust::cuda::par(exec), first, last, result, op, pred);
     exec.stop();
 
     return ret;
@@ -82,7 +82,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              Predicate pred)
 {
     exec.start(THRUST_TRANSFORM_IF);
-    ForwardIterator ret = thrust::transform_if(exec.policy(), first, last, stencil, result, op, pred);
+    ForwardIterator ret = thrust::transform_if(thrust::cuda::par(exec), first, last, stencil, result, op, pred);
     exec.stop();
 
     return ret;
@@ -103,7 +103,7 @@ ForwardIterator transform_if(grapple_system &exec,
                              Predicate pred)
 {
     exec.start(THRUST_TRANSFORM_IF);
-    ForwardIterator ret = thrust::transform_if(exec.policy(), first1, last1, first2, stencil, result, binary_op, pred);
+    ForwardIterator ret = thrust::transform_if(thrust::cuda::par(exec), first1, last1, first2, stencil, result, binary_op, pred);
     exec.stop();
 
     return ret;

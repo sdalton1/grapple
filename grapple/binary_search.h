@@ -8,7 +8,7 @@ ForwardIterator lower_bound(grapple_system &exec,
                             const LessThanComparable &value)
 {
     exec.start(THRUST_LOWER_BOUND);
-    ForwardIterator ret = thrust::lower_bound(exec.policy(), first, last, value);
+    ForwardIterator ret = thrust::lower_bound(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -22,7 +22,7 @@ ForwardIterator lower_bound(grapple_system &exec,
                             StrictWeakOrdering comp)
 {
     exec.start(THRUST_LOWER_BOUND);
-    ForwardIterator ret = thrust::lower_bound(exec.policy(), first, last, value, comp);
+    ForwardIterator ret = thrust::lower_bound(thrust::cuda::par(exec), first, last, value, comp);
     exec.stop();
 
     return ret;
@@ -35,7 +35,7 @@ ForwardIterator upper_bound(grapple_system &exec,
                             const LessThanComparable &value)
 {
     exec.start(THRUST_UPPER_BOUND);
-    ForwardIterator ret = thrust::upper_bound(exec.policy(), first, last, value);
+    ForwardIterator ret = thrust::upper_bound(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -49,7 +49,7 @@ ForwardIterator upper_bound(grapple_system &exec,
                             StrictWeakOrdering comp)
 {
     exec.start(THRUST_UPPER_BOUND);
-    ForwardIterator ret = thrust::upper_bound(exec.policy(), first, last, value, comp);
+    ForwardIterator ret = thrust::upper_bound(thrust::cuda::par(exec), first, last, value, comp);
     exec.stop();
 
     return ret;
@@ -62,7 +62,7 @@ bool binary_search(grapple_system &exec,
                    const LessThanComparable& value)
 {
     exec.start(THRUST_BINARY_SEARCH);
-    bool ret = thrust::binary_search(exec.policy(), first, last, value);
+    bool ret = thrust::binary_search(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -76,7 +76,7 @@ bool binary_search(grapple_system &exec,
                    StrictWeakOrdering comp)
 {
     exec.start(THRUST_BINARY_SEARCH);
-    bool ret = thrust::binary_search(exec.policy(), first, last, value, comp);
+    bool ret = thrust::binary_search(thrust::cuda::par(exec), first, last, value, comp);
     exec.stop();
 
     return ret;
@@ -90,7 +90,7 @@ equal_range(grapple_system &exec,
             const LessThanComparable& value)
 {
     exec.start(THRUST_EQUAL_RANGE);
-    thrust::pair<ForwardIterator, ForwardIterator> ret = thrust::equal_range(exec.policy(), first, last, value);
+    thrust::pair<ForwardIterator, ForwardIterator> ret = thrust::equal_range(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -105,7 +105,7 @@ equal_range(grapple_system &exec,
             StrictWeakOrdering comp)
 {
     exec.start(THRUST_EQUAL_RANGE);
-    thrust::pair<ForwardIterator, ForwardIterator> ret = thrust::equal_range(exec.policy(), first, last, value, comp);
+    thrust::pair<ForwardIterator, ForwardIterator> ret = thrust::equal_range(thrust::cuda::par(exec), first, last, value, comp);
     exec.stop();
 
     return ret;
@@ -121,7 +121,7 @@ OutputIterator lower_bound(grapple_system &exec,
                            OutputIterator result)
 {
     exec.start(THRUST_LOWER_BOUND);
-    OutputIterator ret = thrust::lower_bound(exec.policy(), first, last, values_first, values_last, result);
+    OutputIterator ret = thrust::lower_bound(thrust::cuda::par(exec), first, last, values_first, values_last, result);
     exec.stop();
 
     return ret;
@@ -137,7 +137,7 @@ OutputIterator lower_bound(grapple_system &exec,
                            StrictWeakOrdering comp)
 {
     exec.start(THRUST_LOWER_BOUND);
-    OutputIterator ret = thrust::lower_bound(exec.policy(), first, last, values_first, values_last, result, comp);
+    OutputIterator ret = thrust::lower_bound(thrust::cuda::par(exec), first, last, values_first, values_last, result, comp);
     exec.stop();
 
     return ret;
@@ -152,7 +152,7 @@ OutputIterator upper_bound(grapple_system &exec,
                            OutputIterator result)
 {
     exec.start(THRUST_UPPER_BOUND);
-    OutputIterator ret = thrust::upper_bound(exec.policy(), first, last, values_first, values_last, result);
+    OutputIterator ret = thrust::upper_bound(thrust::cuda::par(exec), first, last, values_first, values_last, result);
     exec.stop();
 
     return ret;
@@ -168,7 +168,7 @@ OutputIterator upper_bound(grapple_system &exec,
                            StrictWeakOrdering comp)
 {
     exec.start(THRUST_UPPER_BOUND);
-    OutputIterator ret = thrust::upper_bound(exec.policy(), first, last, values_first, values_last, result, comp);
+    OutputIterator ret = thrust::upper_bound(thrust::cuda::par(exec), first, last, values_first, values_last, result, comp);
     exec.stop();
 
     return ret;
@@ -183,7 +183,7 @@ OutputIterator binary_search(grapple_system &exec,
                              OutputIterator result)
 {
     exec.start(THRUST_BINARY_SEARCH);
-    OutputIterator ret = thrust::binary_search(exec.policy(), first, last, values_first, values_last, result);
+    OutputIterator ret = thrust::binary_search(thrust::cuda::par(exec), first, last, values_first, values_last, result);
     exec.stop();
 
     return ret;
@@ -199,7 +199,7 @@ OutputIterator binary_search(grapple_system &exec,
                              StrictWeakOrdering comp)
 {
     exec.start(THRUST_BINARY_SEARCH);
-    OutputIterator ret = thrust::binary_search(exec.policy(), first, last, values_first, values_last, result, comp);
+    OutputIterator ret = thrust::binary_search(thrust::cuda::par(exec), first, last, values_first, values_last, result, comp);
     exec.stop();
 
     return ret;

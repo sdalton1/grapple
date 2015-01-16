@@ -27,6 +27,8 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <stack>
+#include <vector>
 
 #include "grapple_map.h"
 
@@ -41,13 +43,19 @@ class grapple_data
 
     grapple_data(void) : func_id(-1), stack_frame(0), mem_size(0), time(0) {}
 
+    void set_data(int stack_index, int func_index, float elapsed_time)
+    {
+      stack_frame = stack_index;
+      func_id = func_index;
+      time = elapsed_time;
+    }
+
     friend std::ostream &operator<<( std::ostream &output,
                                      const grapple_data &data )
     {
         std::string name(grapple_map.find(data.func_id));
 
-        output << "(on stream " << data.stream << ") "
-               << std::string(data.stack_frame, '\t')
+        output << std::string(data.stack_frame, '\t')
                << std::setw(23) << name           << " : "
                << std::setw( 8) << data.time      << " (ms), allocated : "
                << std::setw(10) << data.mem_size  << " bytes";
@@ -57,26 +65,29 @@ class grapple_data
 };
 
 struct grapple_system
-  : public thrust::system::cuda::detail::execute_on_stream_base<grapple_system>
+  : public thrust::detail::execution_policy_base<grapple_system>
 {
 private:
 
-    typedef thrust::system::cuda::detail::execute_on_stream_base<grapple_system> Parent;
-    typedef thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execution_policy> Allocator;
+    typedef thrust::detail::execution_policy_base<grapple_system> Parent;
 
-    cudaEvent_t tstart;
-    cudaEvent_t tstop;
-    cudaStream_t s;
-    int func_index;
+    const static size_t STACK_SIZE = 100;
+    cudaEvent_t tstart[STACK_SIZE];
+    cudaEvent_t tstop[STACK_SIZE];
+
+    int func_index[STACK_SIZE];
     int stack_frame;
+    int abs_index;
+
+    std::stack<int> stack;
 
 public:
 
     typedef char value_type;
 
-    thrust::host_vector< grapple_data > data;
+    std::vector<grapple_data> data;
 
-    grapple_system(void) : Parent(), func_index(-1), stack_frame(0)
+    grapple_system(void) : Parent(), stack_frame(0), abs_index(0)
     {
         data.reserve(100);
     }
@@ -85,28 +96,26 @@ public:
 
     void start(const int func_num)
     {
-        s = stream(*this);
-        func_index = func_num;
-        stack_frame++;
+        func_index[stack_frame] = func_num;
 
-        cudaEventCreate(&tstart);
-        cudaEventCreate(&tstop);
-        cudaEventRecord(tstart, 0);
+        cudaEventCreate(&tstart[stack_frame]);
+        cudaEventCreate(&tstop[stack_frame]);
+        cudaEventRecord(tstart[stack_frame++], 0);
 
         data.push_back(grapple_data());
+        stack.push(abs_index++);
     }
 
     void stop(void)
     {
         float elapsed_time;
-        cudaEventRecord(tstop, 0);
-        cudaEventSynchronize(tstop);
-        cudaEventElapsedTime(&elapsed_time, tstart, tstop);
+        cudaEventRecord(tstop[--stack_frame], 0);
+        cudaEventSynchronize(tstop[stack_frame]);
+        cudaEventElapsedTime(&elapsed_time, tstart[stack_frame], tstop[stack_frame]);
 
-        data.back().func_id = func_index;
-        data.back().stack_frame = --stack_frame;
-        data.back().time = elapsed_time;
-        data.back().stream = s;
+        int index = stack.top();
+        data[index].set_data(stack_frame, func_index[stack_frame], elapsed_time);
+        stack.pop();
     }
 
     char *allocate(std::ptrdiff_t num_bytes)
@@ -120,15 +129,14 @@ public:
         thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
     }
 
-    Allocator policy(void)
+    Parent& policy(void)
     {
-        return Allocator(*this);
+        return reinterpret_cast<Parent&>(*this);
     }
 
     void print(void)
     {
         std::cout << std::left;
-
         for(size_t i = 0; i < data.size(); i++)
             std::cout << "[" << i << "]" << data[i] << std::endl;
     }

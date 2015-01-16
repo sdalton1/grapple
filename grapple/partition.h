@@ -27,7 +27,7 @@ ForwardIterator partition(grapple_system &exec,
                           Predicate pred)
 {
     exec.start(THRUST_PARTITION);
-    ForwardIterator ret = thrust::partition(exec.policy(), first, last, pred);
+    ForwardIterator ret = thrust::partition(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;
@@ -43,7 +43,7 @@ ForwardIterator partition(grapple_system &exec,
                           Predicate pred)
 {
     exec.start(THRUST_PARTITION);
-    ForwardIterator ret = thrust::partition(exec.policy(), first, last, stencil, pred);
+    ForwardIterator ret = thrust::partition(thrust::cuda::par(exec), first, last, stencil, pred);
     exec.stop();
 
     return ret;
@@ -62,7 +62,7 @@ partition_copy(grapple_system &exec,
                Predicate pred)
 {
     exec.start(THRUST_PARTITION_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::partition_copy(exec.policy(), first, last, out_true, out_false, pred);
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::partition_copy(thrust::cuda::par(exec), first, last, out_true, out_false, pred);
     exec.stop();
 
     return ret;
@@ -83,7 +83,7 @@ partition_copy(grapple_system &exec,
                Predicate pred)
 {
     exec.start(THRUST_PARTITION_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::partition_copy(exec.policy(), first, last, stencil, out_true, out_false, pred);
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::partition_copy(thrust::cuda::par(exec), first, last, stencil, out_true, out_false, pred);
     exec.stop();
 
     return ret;
@@ -97,7 +97,7 @@ ForwardIterator stable_partition(grapple_system &exec,
                                  Predicate pred)
 {
     exec.start(THRUST_STABLE_PARTITION);
-    ForwardIterator ret = thrust::stable_partition(exec.policy(), first, last, pred);
+    ForwardIterator ret = thrust::stable_partition(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;
@@ -113,7 +113,7 @@ ForwardIterator stable_partition(grapple_system &exec,
                                  Predicate pred)
 {
     exec.start(THRUST_STABLE_PARTITION);
-    ForwardIterator ret = thrust::stable_partition(exec.policy(), first, last, stencil, pred);
+    ForwardIterator ret = thrust::stable_partition(thrust::cuda::par(exec), first, last, stencil, pred);
     exec.stop();
 
     return ret;
@@ -132,7 +132,7 @@ stable_partition_copy(grapple_system &exec,
                       Predicate pred)
 {
     exec.start(THRUST_STABLE_PARTITION_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::stable_partition_copy(exec.policy(), first, last, out_true, out_false, pred);
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::stable_partition_copy(thrust::cuda::par(exec), first, last, out_true, out_false, pred);
     exec.stop();
 
     return ret;
@@ -153,7 +153,7 @@ stable_partition_copy(grapple_system &exec,
                       Predicate pred)
 {
     exec.start(THRUST_STABLE_PARTITION_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::stable_partition_copy(exec.policy(), first, last, stencil, out_true, out_false, pred);
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::stable_partition_copy(thrust::cuda::par(exec), first, last, stencil, out_true, out_false, pred);
     exec.stop();
 
     return ret;
@@ -166,7 +166,7 @@ ForwardIterator partition_point(grapple_system &exec,
                                 Predicate pred)
 {
     exec.start(THRUST_PARTITION_POINT);
-    ForwardIterator ret = thrust::partition_point(exec.policy(), first, last, pred);
+    ForwardIterator ret = thrust::partition_point(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;
@@ -179,7 +179,7 @@ bool is_partitioned(grapple_system &exec,
                     Predicate pred)
 {
     exec.start(THRUST_IS_PARTITIONED);
-    bool ret = thrust::is_partitioned(exec.policy(), first, last, pred);
+    bool ret = thrust::is_partitioned(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;

@@ -27,7 +27,7 @@ thrust::pair<InputIterator1, InputIterator2> mismatch(grapple_system &exec,
                                                       InputIterator2 first2)
 {
     exec.start(THRUST_MISMATCH);
-    thrust::pair<InputIterator1, InputIterator2> ret = thrust::mismatch(exec.policy(), first1, last1, first2);
+    thrust::pair<InputIterator1, InputIterator2> ret = thrust::mismatch(thrust::cuda::par(exec), first1, last1, first2);
     exec.stop();
 
     return ret;
@@ -41,7 +41,7 @@ thrust::pair<InputIterator1, InputIterator2> mismatch(grapple_system &exec,
                                                       BinaryPredicate pred)
 {
     exec.start(THRUST_MISMATCH);
-    thrust::pair<InputIterator1, InputIterator2> ret = thrust::mismatch(exec.policy(), first1, last1, first2, pred);
+    thrust::pair<InputIterator1, InputIterator2> ret = thrust::mismatch(thrust::cuda::par(exec), first1, last1, first2, pred);
     exec.stop();
 
     return ret;

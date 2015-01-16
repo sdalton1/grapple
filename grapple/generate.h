@@ -28,7 +28,7 @@ void generate(grapple_system &exec,
               Generator gen)
 {
     exec.start(THRUST_GENERATE);
-    thrust::generate(exec.policy(), first, last, gen);
+    thrust::generate(thrust::cuda::par(exec), first, last, gen);
     exec.stop();
 }
 
@@ -42,7 +42,7 @@ OutputIterator generate_n(grapple_system &exec,
                           Generator gen)
 {
     exec.start(THRUST_GENERATE_N);
-    OutputIterator ret = thrust::generate_n(exec.policy(), first, n, gen);
+    OutputIterator ret = thrust::generate_n(thrust::cuda::par(exec), first, n, gen);
     exec.stop();
 
     return ret;

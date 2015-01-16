@@ -31,7 +31,7 @@ OutputIterator transform_inclusive_scan(grapple_system &exec,
                                         AssociativeOperator binary_op)
 {
     exec.start(THRUST_TRANSFORM_INCLUSIVE_SCAN);
-    OutputIterator ret = thrust::transform_inclusive_scan(exec.policy(), first, last, result, unary_op, binary_op);
+    OutputIterator ret = thrust::transform_inclusive_scan(thrust::cuda::par(exec), first, last, result, unary_op, binary_op);
     exec.stop();
 
     return ret;
@@ -51,7 +51,7 @@ OutputIterator transform_exclusive_scan(grapple_system &exec,
                                         AssociativeOperator binary_op)
 {
     exec.start(THRUST_TRANSFORM_EXCLUSIVE_SCAN);
-    OutputIterator ret = thrust::transform_exclusive_scan(exec.policy(), first, last, result, unary_op, init, binary_op);
+    OutputIterator ret = thrust::transform_exclusive_scan(thrust::cuda::par(exec), first, last, result, unary_op, init, binary_op);
     exec.stop();
 
     return ret;

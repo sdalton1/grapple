@@ -26,7 +26,7 @@ reduce(grapple_system &exec, InputIterator first, InputIterator last)
 {
     exec.start(THRUST_REDUCE);
     typename thrust::iterator_traits<InputIterator>::value_type ret =
-        thrust::reduce(exec.policy(), first, last);
+        thrust::reduce(thrust::cuda::par(exec), first, last);
     exec.stop();
 
     return ret;
@@ -39,7 +39,7 @@ T reduce(grapple_system &exec,
          T init)
 {
     exec.start(THRUST_REDUCE);
-    T ret = thrust::reduce(exec.policy(), first, last, init);
+    T ret = thrust::reduce(thrust::cuda::par(exec), first, last, init);
     exec.stop();
 
     return ret;
@@ -56,7 +56,7 @@ T reduce(grapple_system &exec,
          BinaryFunction binary_op)
 {
     exec.start(THRUST_REDUCE);
-    T ret = thrust::reduce(exec.policy(), first, last, init, binary_op);
+    T ret = thrust::reduce(thrust::cuda::par(exec), first, last, init, binary_op);
     exec.stop();
 
     return ret;
@@ -76,7 +76,7 @@ reduce_by_key(grapple_system &exec,
               OutputIterator2 values_output)
 {
     exec.start(THRUST_REDUCE_BY_KEY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(thrust::cuda::par(exec),
             keys_first, keys_last, values_first, keys_output, values_output);
     exec.stop();
 
@@ -99,7 +99,7 @@ reduce_by_key(grapple_system &exec,
               BinaryPredicate binary_pred)
 {
     exec.start(THRUST_REDUCE_BY_KEY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(thrust::cuda::par(exec),
             keys_first, keys_last, values_first, keys_output, values_output, binary_pred);
     exec.stop();
 
@@ -124,7 +124,7 @@ reduce_by_key(grapple_system &exec,
               BinaryFunction binary_op)
 {
     exec.start(THRUST_REDUCE_BY_KEY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(exec.policy(),
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::reduce_by_key(thrust::cuda::par(exec),
             keys_first, keys_last, values_first, keys_output, values_output, binary_pred, binary_op);
     exec.stop();
 

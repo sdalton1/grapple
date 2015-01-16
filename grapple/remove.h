@@ -28,7 +28,7 @@ ForwardIterator remove(grapple_system &exec,
                        const T &value)
 {
     exec.start(THRUST_REMOVE);
-    ForwardIterator ret = thrust::remove(exec.policy(), first, last, value);
+    ForwardIterator ret = thrust::remove(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -44,7 +44,7 @@ OutputIterator remove_copy(grapple_system &exec,
                            const T &value)
 {
     exec.start(THRUST_REMOVE_COPY);
-    OutputIterator ret = thrust::remove_copy(exec.policy(), first, last, result, value);
+    OutputIterator ret = thrust::remove_copy(thrust::cuda::par(exec), first, last, result, value);
     exec.stop();
 
     return ret;
@@ -58,7 +58,7 @@ ForwardIterator remove_if(grapple_system &exec,
                           Predicate pred)
 {
     exec.start(THRUST_REMOVE_IF);
-    ForwardIterator ret = thrust::remove_if(exec.policy(), first, last, pred);
+    ForwardIterator ret = thrust::remove_if(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;
@@ -74,7 +74,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
                               Predicate pred)
 {
     exec.start(THRUST_REMOVE_COPY_IF);
-    OutputIterator ret = thrust::remove_copy_if(exec.policy(), first, last, result, pred);
+    OutputIterator ret = thrust::remove_copy_if(thrust::cuda::par(exec), first, last, result, pred);
     exec.stop();
 
     return ret;
@@ -91,7 +91,7 @@ ForwardIterator remove_if(grapple_system &exec,
                           Predicate pred)
 {
     exec.start(THRUST_REMOVE_IF);
-    ForwardIterator ret = thrust::remove_if(exec.policy(), first, last, stencil, pred);
+    ForwardIterator ret = thrust::remove_if(thrust::cuda::par(exec), first, last, stencil, pred);
     exec.stop();
 
     return ret;
@@ -110,7 +110,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
                               Predicate pred)
 {
     exec.start(THRUST_REMOVE_COPY_IF);
-    OutputIterator ret = thrust::remove_copy_if(exec.policy(), first, last, stencil, result, pred);
+    OutputIterator ret = thrust::remove_copy_if(thrust::cuda::par(exec), first, last, stencil, result, pred);
     exec.stop();
 
     return ret;

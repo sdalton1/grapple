@@ -32,7 +32,7 @@ OutputType transform_reduce(grapple_system &exec,
                             BinaryFunction binary_op)
 {
     exec.start(THRUST_TRANSFORM_REDUCE);
-    OutputType ret = thrust::transform_reduce(exec.policy(), first, last, unary_op, init, binary_op);
+    OutputType ret = thrust::transform_reduce(thrust::cuda::par(exec), first, last, unary_op, init, binary_op);
     exec.stop();
 
     return ret;

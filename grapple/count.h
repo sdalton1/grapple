@@ -25,7 +25,7 @@ count(grapple_system &exec, InputIterator first, InputIterator last, const Equal
 {
     exec.start(THRUST_COUNT);
     typename thrust::iterator_traits<InputIterator>::difference_type ret =
-      thrust::count(exec.policy(), first, last, value);
+      thrust::count(thrust::cuda::par(exec), first, last, value);
     exec.stop();
 
     return ret;
@@ -37,7 +37,7 @@ count_if(grapple_system &exec, InputIterator first, InputIterator last, Predicat
 {
     exec.start(THRUST_COUNT_IF);
     typename thrust::iterator_traits<InputIterator>::difference_type ret =
-      thrust::count_if(exec.policy(), first, last, pred);
+      thrust::count_if(thrust::cuda::par(exec), first, last, pred);
     exec.stop();
 
     return ret;

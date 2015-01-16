@@ -29,7 +29,7 @@ OutputType inner_product(grapple_system &exec,
                          OutputType init)
 {
     exec.start(THRUST_INNER_PRODUCT);
-    OutputType ret = thrust::inner_product(exec.policy(), first1, last1, first2, init);
+    OutputType ret = thrust::inner_product(thrust::cuda::par(exec), first1, last1, first2, init);
     exec.stop();
 
     return ret;
@@ -49,7 +49,7 @@ OutputType inner_product(grapple_system &exec,
                          BinaryFunction2 binary_op2)
 {
     exec.start(THRUST_INNER_PRODUCT);
-    OutputType ret = thrust::inner_product(exec.policy(), first1, last1, first2, init, binary_op1, binary_op2);
+    OutputType ret = thrust::inner_product(thrust::cuda::par(exec), first1, last1, first2, init, binary_op1, binary_op2);
     exec.stop();
 
     return ret;

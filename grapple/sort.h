@@ -30,7 +30,7 @@ void sort(grapple_system &exec,
           RandomAccessIterator last)
 {
     exec.start(THRUST_SORT);
-    thrust::sort(exec.policy(), first, last);
+    thrust::sort(thrust::cuda::par(exec), first, last);
     exec.stop();
 }
 
@@ -42,7 +42,7 @@ void sort(grapple_system &exec,
           StrictWeakOrdering comp)
 {
     exec.start(THRUST_SORT);
-    thrust::sort(exec.policy(), first, last, comp);
+    thrust::sort(thrust::cuda::par(exec), first, last, comp);
     exec.stop();
 }
 
@@ -52,7 +52,7 @@ void stable_sort(grapple_system &exec,
                  RandomAccessIterator last)
 {
     exec.start(THRUST_STABLE_SORT);
-    thrust::stable_sort(exec.policy(), first, last);
+    thrust::stable_sort(thrust::cuda::par(exec), first, last);
     exec.stop();
 }
 
@@ -64,7 +64,7 @@ void stable_sort(grapple_system &exec,
                  StrictWeakOrdering comp)
 {
     exec.start(THRUST_STABLE_SORT);
-    thrust::stable_sort(exec.policy(), first, last, comp);
+    thrust::stable_sort(thrust::cuda::par(exec), first, last, comp);
     exec.stop();
 }
 
@@ -81,7 +81,7 @@ void sort_by_key(grapple_system &exec,
                  RandomAccessIterator2 values_first)
 {
     exec.start(THRUST_SORT_BY_KEY);
-    thrust::sort_by_key(exec.policy(), keys_first, keys_last, values_first);
+    thrust::sort_by_key(thrust::cuda::par(exec), keys_first, keys_last, values_first);
     exec.stop();
 }
 
@@ -95,7 +95,7 @@ void sort_by_key(grapple_system &exec,
                  StrictWeakOrdering comp)
 {
     exec.start(THRUST_SORT_BY_KEY);
-    thrust::sort_by_key(exec.policy(), keys_first, keys_last, values_first, comp);
+    thrust::sort_by_key(thrust::cuda::par(exec), keys_first, keys_last, values_first, comp);
     exec.stop();
 }
 
@@ -107,7 +107,7 @@ void stable_sort_by_key(grapple_system &exec,
                         RandomAccessIterator2 values_first)
 {
     exec.start(THRUST_STABLE_SORT_BY_KEY);
-    thrust::stable_sort_by_key(exec.policy(), keys_first, keys_last, values_first);
+    thrust::stable_sort_by_key(thrust::cuda::par(exec), keys_first, keys_last, values_first);
     exec.stop();
 }
 
@@ -121,7 +121,7 @@ void stable_sort_by_key(grapple_system &exec,
                         StrictWeakOrdering comp)
 {
     exec.start(THRUST_STABLE_SORT_BY_KEY);
-    thrust::stable_sort_by_key(exec.policy(), keys_first, keys_last, values_first, comp);
+    thrust::stable_sort_by_key(thrust::cuda::par(exec), keys_first, keys_last, values_first, comp);
     exec.stop();
 }
 
@@ -131,7 +131,7 @@ bool is_sorted(grapple_system &exec,
                ForwardIterator last)
 {
     exec.start(THRUST_IS_SORTED);
-    bool ret = thrust::is_sorted(exec.policy(), first, last);
+    bool ret = thrust::is_sorted(thrust::cuda::par(exec), first, last);
     exec.stop();
 
     return ret;
@@ -144,7 +144,7 @@ bool is_sorted(grapple_system &exec,
                Compare comp)
 {
     exec.start(THRUST_IS_SORTED);
-    bool ret = thrust::is_sorted(exec.policy(), first, last);
+    bool ret = thrust::is_sorted(thrust::cuda::par(exec), first, last);
     exec.stop();
 
     return ret;
@@ -156,7 +156,7 @@ ForwardIterator is_sorted_until(grapple_system &exec,
                                 ForwardIterator last)
 {
     exec.start(THRUST_IS_SORTED_UNTIL);
-    ForwardIterator ret = thrust::is_sorted_until(exec.policy(), first, last);
+    ForwardIterator ret = thrust::is_sorted_until(thrust::cuda::par(exec), first, last);
     exec.stop();
 
     return ret;
@@ -169,7 +169,7 @@ ForwardIterator is_sorted_until(grapple_system &exec,
                                 Compare comp)
 {
     exec.start(THRUST_IS_SORTED_UNTIL);
-    ForwardIterator ret = thrust::is_sorted_until(exec.policy(), first, last, comp);
+    ForwardIterator ret = thrust::is_sorted_until(thrust::cuda::par(exec), first, last, comp);
     exec.stop();
 
     return ret;
