@@ -92,7 +92,10 @@ public:
         data.reserve(100);
     }
 
-    ~grapple_system(void) {}
+    ~grapple_system(void)
+    {
+        print();
+    }
 
     void start(const int func_num)
     {

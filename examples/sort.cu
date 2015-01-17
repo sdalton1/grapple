@@ -97,7 +97,7 @@ struct evens_before_odds
 
 int main(void)
 {
-    size_t N = 1<<18;
+    size_t N = 1<<10;
 
     grapple_system grapple;
 
@@ -143,8 +143,6 @@ int main(void)
         initialize(keys, values);
         thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin(), thrust::greater<int>());
     }
-
-    grapple.print();
 
     return 0;
 }

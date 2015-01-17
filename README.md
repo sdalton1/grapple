@@ -33,8 +33,6 @@ int main(void)
     initialize(keys);
     thrust::sort(grapple, keys.begin(), keys.end());
 
-    grapple.print();
-
     return 0;
 }
 ```
