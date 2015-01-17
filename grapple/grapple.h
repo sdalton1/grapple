@@ -123,7 +123,8 @@ public:
 
     char *allocate(std::ptrdiff_t num_bytes)
     {
-        data.back().mem_size += num_bytes;
+        int index = stack.top();
+        data[index].mem_size += num_bytes;
         return thrust::cuda::malloc<char>(num_bytes).get();
     }
 
@@ -139,9 +140,8 @@ public:
 
     void print(void)
     {
-        std::cout << std::left;
         for(size_t i = 0; i < data.size(); i++)
-            std::cout << "[" << i << "]" << data[i] << std::endl;
+            std::cout << std::right << "[" << std::setw(2) << i << "]" << std::left << data[i] << std::endl;
     }
 };
 
