@@ -105,7 +105,8 @@ specific code.
 #include <grapple/grapple.h>
 
 template<typename DerivedPolicy, typename Array>
-void my_func(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+void my_func(const thrust::detail::execution_policy_base<DerivedPolicy>& exec,
+             Array& keys)
 {
   thrust::sort(exec, keys.begin(), keys.end());
   thrust::reduce(exec, keys.begin(), keys.end());
