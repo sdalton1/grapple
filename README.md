@@ -62,7 +62,7 @@ profiling.
 #include <thrust/reduce.h>
 
 template<typename Array>
-void my_func(keys)
+void my_func(Array& keys)
 {
   // initialize some performance timer
   timer tsort;
