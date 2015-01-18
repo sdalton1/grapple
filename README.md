@@ -27,11 +27,9 @@ int main(void)
 {
     size_t N = 1<<18;
 
-    grapple_system grapple;
-
     thrust::device_vector<float> keys(N);
     initialize(keys);
-    thrust::sort(grapple, keys.begin(), keys.end());
+    thrust::sort(grapple_system(), keys.begin(), keys.end());
 
     return 0;
 }
@@ -106,7 +104,7 @@ specific code.
 #include <grapple/grapple.h>
 
 template<typename DerivedPolicy, typename Array>
-void my_func(const thrust::execution_policy_base<DerivedPolicy>& exec,
+void my_func(const thrust::execution_policy<DerivedPolicy>& exec,
              Array& keys)
 {
   thrust::sort(exec, keys.begin(), keys.end());

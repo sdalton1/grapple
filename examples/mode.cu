@@ -36,8 +36,12 @@ thrust::tuple<int,int> compute_mode(const thrust::execution_policy<DerivedPolicy
                         thrust::plus<int>(),
                         thrust::not_equal_to<int>()) + 1;
 
+    typedef typename thrust::iterator_system<typename Array::iterator>::type System;
+    System system;
+
     // count multiplicity of each key
-    thrust::device_vector<int> d_output_keys(num_unique);
+    thrust::detail::temporary_array<int,System> d_output_keys(system, num_unique);
+    /* thrust::device_vector<int> d_output_keys(num_unique); */
     thrust::device_vector<int> d_output_counts(num_unique);
     thrust::reduce_by_key(exec,
                           d_data_copy.begin(), d_data_copy.end(),
