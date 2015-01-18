@@ -102,6 +102,8 @@ specific code.
 #include <thrust/sort.h>
 #include <thrust/reduce.h>
 
+#include <grapple/grapple.h>
+
 template<typename DerivedPolicy, typename Array>
 void my_func(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
 {
@@ -119,8 +121,15 @@ void my_func(Array& keys)
 
 int main(void)
 {
-    thrust::device_vector<float> keys(10);
-    my_func(keys);
-    return 0;
+  thrust::device_vector<float> keys(10);
+
+  // call my_func normally
+  my_func(keys);
+
+  // call my_func with profiling
+  grapple_system grapple;
+  my_func(grapple, keys);
+
+  return 0;
 }
 ~~~
