@@ -2,6 +2,8 @@
 #include "complex_test.h"
 
 // grapple intercept file
+
+// define complex function markers
 enum
 {
     THRUST_EXAMPLE_1,
@@ -9,6 +11,8 @@ enum
     THRUST_EXAMPLE_3,
 };
 
+// insert example function markers and names
+// into global grapple map
 struct example_grapple_init
 {
     example_grapple_init(void)
@@ -20,6 +24,7 @@ struct example_grapple_init
 };
 static example_grapple_init static_example;
 
+// intercept grapple execution policy functions for profiling
 template<typename Array>
 void thrust_example_1(grapple_system& exec, Array& keys)
 {
