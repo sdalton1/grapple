@@ -80,8 +80,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename ForwardIterator,
+template<typename ForwardIterator,
          typename InputIterator,
          typename Predicate>
 ForwardIterator remove_if(grapple_system &exec,
@@ -97,8 +96,7 @@ ForwardIterator remove_if(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename InputIterator1,
+template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator,
          typename Predicate>

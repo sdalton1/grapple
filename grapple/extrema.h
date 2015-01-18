@@ -39,7 +39,7 @@ ForwardIterator min_element(grapple_system &exec, ForwardIterator first, Forward
     return ret;
 }
 
-template<typename DerivedPolicy, typename ForwardIterator>
+template<typename ForwardIterator>
 ForwardIterator max_element(grapple_system &exec, ForwardIterator first, ForwardIterator last)
 {
     exec.start(THRUST_MAX_ELEMENT);

@@ -45,8 +45,7 @@ T reduce(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename InputIterator,
+template<typename InputIterator,
          typename T,
          typename BinaryFunction>
 T reduce(grapple_system &exec,
@@ -62,8 +61,7 @@ T reduce(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename InputIterator1,
+template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator1,
          typename OutputIterator2>
@@ -83,8 +81,7 @@ reduce_by_key(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename InputIterator1,
+template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator1,
          typename OutputIterator2,
@@ -106,8 +103,7 @@ reduce_by_key(grapple_system &exec,
     return ret;
 }
 
-template<typename DerivedPolicy,
-         typename InputIterator1,
+template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator1,
          typename OutputIterator2,

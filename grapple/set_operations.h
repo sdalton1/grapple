@@ -353,8 +353,7 @@ set_union_by_key(grapple_system &exec,
 }
 
 
-template<typename DerivedPolicy,
-         typename InputIterator1,
+template<typename InputIterator1,
          typename InputIterator2,
          typename InputIterator3,
          typename InputIterator4,

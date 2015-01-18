@@ -19,7 +19,7 @@
 #include <thrust/detail/config.h>
 #include <thrust/reverse.h>
 
-template<typename DerivedPolicy, typename BidirectionalIterator>
+template<typename BidirectionalIterator>
 void reverse(grapple_system &exec,
              BidirectionalIterator first,
              BidirectionalIterator last)
