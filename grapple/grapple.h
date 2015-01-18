@@ -65,11 +65,11 @@ class grapple_data
 };
 
 struct grapple_system
-  : public thrust::detail::execution_policy_base<grapple_system>
+  : public thrust::execution_policy<grapple_system>
 {
 private:
 
-    typedef thrust::detail::execution_policy_base<grapple_system> Parent;
+    typedef thrust::execution_policy<grapple_system> Parent;
 
     const static size_t STACK_SIZE = 100;
     cudaEvent_t tstart[STACK_SIZE];

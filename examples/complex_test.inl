@@ -15,7 +15,7 @@ void initialize(thrust::device_vector<float>& v)
 }
 
 template<typename DerivedPolicy, typename Array>
-void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+void thrust_example_1(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     Array values(keys.size());
     initialize(keys);
@@ -26,7 +26,7 @@ void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>
 }
 
 template<typename DerivedPolicy, typename Array>
-void thrust_example_2(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+void thrust_example_2(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     initialize(keys);
 
@@ -35,7 +35,7 @@ void thrust_example_2(const thrust::detail::execution_policy_base<DerivedPolicy>
 }
 
 template<typename DerivedPolicy, typename Array>
-void thrust_example_3(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+void thrust_example_3(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     DerivedPolicy& derived(thrust::detail::derived_cast(thrust::detail::strip_const(exec)));
 
