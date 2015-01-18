@@ -53,8 +53,9 @@ Grapple is designed to exploit execution policies in order to avoid
 littering Thrust based libraries with spurious performance profiling
 code. Coarse-grained profiling of entire functions, such as my_func,
 provides a general performance overview but fine-grained profiling
-requires altering individual functions for the specific purpose of
-profiling.
+may be more useful for identifying performance and memory limited
+sections of code. However, fine-grained profiling requires altering
+individual functions with timer specific code.
 
 ~~~{.cpp}
 #include <thrust/device_vector.h>
@@ -77,7 +78,7 @@ void my_func(Array& keys)
 
 int main(void)
 {
-    thrust::device_vector<float> keys(10);
+    thrust::device_vector<float> keys(1<<10);
 
     timer tmy_func;
     my_func(keys);
@@ -88,7 +89,7 @@ int main(void)
 ~~~
 
 Grapple leverages the use of execution policies to provide flexible
-profiling and allows to user to control the level of granularity without
+profiling and allows the user to control the level of granularity without
 adding specialized code to any underlying functions. The cost of this
 flexibility is tigher integration with the Thrust dispatch system.
 
@@ -105,7 +106,7 @@ specific code.
 #include <grapple/grapple.h>
 
 template<typename DerivedPolicy, typename Array>
-void my_func(const thrust::detail::execution_policy_base<DerivedPolicy>& exec,
+void my_func(const thrust::execution_policy_base<DerivedPolicy>& exec,
              Array& keys)
 {
   thrust::sort(exec, keys.begin(), keys.end());
@@ -122,14 +123,13 @@ void my_func(Array& keys)
 
 int main(void)
 {
-  thrust::device_vector<float> keys(10);
+  thrust::device_vector<float> keys(1<<10);
 
   // call my_func normally
   my_func(keys);
 
   // call my_func with profiling
-  grapple_system grapple;
-  my_func(grapple, keys);
+  my_func(grapple_system(), keys);
 
   return 0;
 }

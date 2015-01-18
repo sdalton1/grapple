@@ -1,2 +1,5 @@
 *.pyc
 *.dblite
+
+examples/cpp_host_cuda_device_release
+examples/cpp_host_cuda_device_debug
