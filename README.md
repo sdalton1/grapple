@@ -105,28 +105,22 @@ specific code.
 template<typename DerivedPolicy, typename Array>
 void my_func(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
 {
-  DerivedPolicy& derived(thrust::detail::derived_cast(thrust::detail::strip_const(exec)));
-
-  thrust::sort(derived, keys.begin(), keys.end());
-  thrust::reduce(derived, keys.begin(), keys.end());
+  thrust::sort(exec, keys.begin(), keys.end());
+  thrust::reduce(exec, keys.begin(), keys.end());
 }
 
 template<typename Array>
 void my_func(Array& keys)
 {
   using thrust::system::detail::generic::select_system;
-
   typename thrust::iterator_system<typename Array::iterator>::type system;
-
   my_func(select_system(system), keys);
 }
 
 int main(void)
 {
     thrust::device_vector<float> keys(10);
-
     my_func(keys);
-
     return 0;
 }
 ~~~
