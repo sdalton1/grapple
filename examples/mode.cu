@@ -14,8 +14,8 @@
 
 #include <grapple/grapple.h>
 
-template<typename DerivedPolicy, typename Array>
-thrust::tuple<int,int> compute_mode(const thrust::execution_policy<DerivedPolicy>& exec,
+template<typename Policy, typename Array>
+thrust::tuple<int,int> compute_mode(const Policy& exec,
                                     const Array& d_data)
 {
     Array d_data_copy(d_data);
@@ -68,9 +68,8 @@ thrust::tuple<int,int> compute_mode(const thrust::execution_policy<DerivedPolicy
 template<typename Array>
 thrust::tuple<int,int> compute_mode(const Array& d_data)
 {
-    using thrust::system::detail::generic::select_system;
     typename thrust::iterator_system<typename Array::iterator>::type system;
-    return compute_mode(select_system(system), d_data);
+    return compute_mode(system, d_data);
 }
 
 int main(void)

@@ -14,8 +14,8 @@ void initialize(thrust::device_vector<float>& v)
         v[i] = dist(rng) / 2.0f;
 }
 
-template<typename DerivedPolicy, typename Array>
-void thrust_example_1(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
+template<typename Policy, typename Array>
+void thrust_example_1(const Policy& exec, Array& keys)
 {
     Array values(keys.size());
     initialize(keys);
@@ -25,8 +25,8 @@ void thrust_example_1(const thrust::execution_policy<DerivedPolicy>& exec, Array
     thrust::adjacent_difference(exec, keys.begin(), keys.end(), values.begin());
 }
 
-template<typename DerivedPolicy, typename Array>
-void thrust_example_2(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
+template<typename Policy, typename Array>
+void thrust_example_2(const Policy& exec, Array& keys)
 {
     initialize(keys);
 
@@ -46,30 +46,21 @@ void thrust_example_3(const thrust::execution_policy<DerivedPolicy>& exec, Array
 template<typename Array>
 void thrust_example_1(Array& keys)
 {
-  using thrust::system::detail::generic::select_system;
-
   typename thrust::iterator_system<typename Array::iterator>::type system;
-
-  thrust_example_1(select_system(system), keys);
+  thrust_example_1(system, keys);
 }
 
 template<typename Array>
 void thrust_example_2(Array& keys)
 {
-  using thrust::system::detail::generic::select_system;
-
   typename thrust::iterator_system<typename Array::iterator>::type system;
-
-  thrust_example_2(select_system(system), keys);
+  thrust_example_2(system, keys);
 }
 
 template<typename Array>
 void thrust_example_3(Array& keys)
 {
-  using thrust::system::detail::generic::select_system;
-
   typename thrust::iterator_system<typename Array::iterator>::type system;
-
-  thrust_example_3(select_system(system), keys);
+  thrust_example_3(system, keys);
 }
 

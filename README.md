@@ -103,8 +103,8 @@ specific code.
 
 #include <grapple/grapple.h>
 
-template<typename DerivedPolicy, typename Array>
-void my_func(const thrust::execution_policy<DerivedPolicy>& exec,
+template<typename Policy, typename Array>
+void my_func(const Policy& exec,
              Array& keys)
 {
   thrust::sort(exec, keys.begin(), keys.end());
@@ -114,9 +114,8 @@ void my_func(const thrust::execution_policy<DerivedPolicy>& exec,
 template<typename Array>
 void my_func(Array& keys)
 {
-  using thrust::system::detail::generic::select_system;
   typename thrust::iterator_system<typename Array::iterator>::type system;
-  my_func(select_system(system), keys);
+  my_func(system, keys);
 }
 
 int main(void)
