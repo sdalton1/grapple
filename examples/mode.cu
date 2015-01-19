@@ -36,12 +36,8 @@ thrust::tuple<int,int> compute_mode(const thrust::execution_policy<DerivedPolicy
                         thrust::plus<int>(),
                         thrust::not_equal_to<int>()) + 1;
 
-    typedef typename thrust::iterator_system<typename Array::iterator>::type System;
-    System system;
-
     // count multiplicity of each key
-    thrust::detail::temporary_array<int,System> d_output_keys(system, num_unique);
-    /* thrust::device_vector<int> d_output_keys(num_unique); */
+    thrust::device_vector<int> d_output_keys(num_unique);
     thrust::device_vector<int> d_output_counts(num_unique);
     thrust::reduce_by_key(exec,
                           d_data_copy.begin(), d_data_copy.end(),
@@ -64,9 +60,9 @@ thrust::tuple<int,int> compute_mode(const thrust::execution_policy<DerivedPolicy
     mode_iter = thrust::max_element(exec, d_output_counts.begin(), d_output_counts.end());
 
     int mode = d_output_keys[mode_iter - d_output_counts.begin()];
-    int occurances = *mode_iter;
+    int occurrences = *mode_iter;
 
-    return thrust::tie(mode, occurances);
+    return thrust::tie(mode, occurrences);
 }
 
 template<typename Array>
@@ -98,18 +94,18 @@ int main(void)
     std::cout << std::endl << std::endl;
 
     {
-      int mode, occurances;
-      thrust::tie(mode, occurances) = compute_mode(d_data);
-      std::cout << "Modal value " << mode << " occurs " << occurances << " times " << std::endl;
+      int mode, occurrences;
+      thrust::tie(mode, occurrences) = compute_mode(d_data);
+      std::cout << "Modal value " << mode << " occurs " << occurrences << " times " << std::endl;
     }
 
     std::cout << std::endl;
 
     {
-      int mode, occurances;
+      int mode, occurrences;
       grapple_system grapple;
-      thrust::tie(mode, occurances) = compute_mode(grapple, d_data);
-      std::cout << "Modal value " << mode << " occurs " << occurances << " times " << std::endl;
+      thrust::tie(mode, occurrences) = compute_mode(grapple, d_data);
+      std::cout << "Modal value " << mode << " occurs " << occurrences << " times " << std::endl;
     }
 
     return 0;
