@@ -21,6 +21,7 @@
 
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
+#include <thrust/system/omp/execution_policy.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -65,11 +66,13 @@ class grapple_data
 };
 
 struct grapple_system
-  : public thrust::execution_policy<grapple_system>
+  // : public thrust::execution_policy<grapple_system>, thrust::system::omp::execution_policy<grapple_system>
+  : public thrust::system::omp::execution_policy<grapple_system>
 {
 private:
 
-    typedef thrust::execution_policy<grapple_system> Parent;
+    // typedef thrust::execution_policy<grapple_system> Parent;
+    typedef thrust::system::omp::execution_policy<grapple_system> Parent;
 
     const static size_t STACK_SIZE = 100;
     cudaEvent_t tstart[STACK_SIZE];
@@ -133,10 +136,23 @@ public:
         thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
     }
 
-    Parent& policy(void)
+    Parent& policy(thrust::omp::tag policy)
     {
         return reinterpret_cast<Parent&>(*this);
     }
+
+    // template<typename System1, typename System2>
+    // thrust::system::cuda::detail::cross_system<System1,System2>
+    // policy(thrust::system::cuda::detail::cross_system<System1,System2> policy)
+    // {
+    //     return policy;
+    // }
+
+    // template<typename ExecutionPolicy>
+    // ExecutionPolicy policy(ExecutionPolicy p)
+    // {
+    //   return p;
+    // }
 
     void print(void)
     {

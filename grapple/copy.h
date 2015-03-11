@@ -25,8 +25,16 @@ OutputIterator copy(grapple_system &exec,
                     InputIterator last,
                     OutputIterator result)
 {
+    using thrust::system::detail::generic::select_system;
+
+    typedef typename thrust::iterator_system<InputIterator>::type  System1;
+    typedef typename thrust::iterator_system<OutputIterator>::type System2;
+
+    System1 system1;
+    System2 system2;
+
     exec.start(THRUST_COPY);
-    OutputIterator ret = thrust::copy(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::copy(exec.policy(select_system(system1,system2)), first, last, result);
     exec.stop();
 
     return ret;

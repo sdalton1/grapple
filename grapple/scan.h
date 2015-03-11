@@ -43,7 +43,7 @@ OutputIterator inclusive_scan(grapple_system &exec,
                               AssociativeOperator binary_op)
 {
     exec.start(THRUST_INCLUSIVE_SCAN);
-    OutputIterator ret = thrust::exclusive_scan(thrust::cuda::par(exec), first, last, result, binary_op);
+    OutputIterator ret = thrust::inclusive_scan(thrust::cuda::par(exec), first, last, result, binary_op);
     exec.stop();
 
     return ret;
