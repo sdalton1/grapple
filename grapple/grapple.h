@@ -33,31 +33,65 @@
 
 #include "grapple_map.h"
 
+enum grapple_type
+{
+    GRAPPLE_CPP,
+    GRAPPLE_OMP,
+    GRAPPLE_TBB,
+    GRAPPLE_CUDA,
+    GRAPPLE_CROSS,
+};
+
 class grapple_data
 {
-  public:
+public:
+    grapple_type system;
     int   func_id;
     int   stack_frame;
     int   mem_size;
     float time;
     cudaStream_t stream;
 
-    grapple_data(void) : func_id(-1), stack_frame(0), mem_size(0), time(0) {}
+    grapple_data(void) : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), mem_size(0), time(0) {}
 
-    void set_data(int stack_index, int func_index, float elapsed_time)
+    void set_data(grapple_type stack_system, int stack_index, int func_index, float elapsed_time)
     {
-      stack_frame = stack_index;
-      func_id = func_index;
-      time = elapsed_time;
+        system = stack_system;
+        stack_frame = stack_index;
+        func_id = func_index;
+        time = elapsed_time;
     }
 
     friend std::ostream &operator<<( std::ostream &output,
                                      const grapple_data &data )
     {
-        std::string name(grapple_map.find(data.func_id));
+        std::string funcname(grapple_map.find(data.func_id));
+        std::string sysname;
 
-        output << std::string(data.stack_frame, '\t')
-               << std::setw(23) << name           << " : "
+        switch(data.system)
+        {
+          case GRAPPLE_CPP :
+              sysname = "cpp ";
+              break;
+          case GRAPPLE_TBB :
+              sysname = "tbb ";
+              break;
+          case GRAPPLE_OMP :
+              sysname = "omp ";
+              break;
+          case GRAPPLE_CUDA :
+              sysname = "cuda";
+              break;
+          case GRAPPLE_CROSS :
+              sysname = "d->h";
+              break;
+          default:
+              sysname = "unk ";
+        }
+
+        output << "[" << sysname << "] "
+               << std::string(data.stack_frame, '\t')
+               << std::setw(23) << funcname       << " : "
                << std::setw( 8) << data.time      << " (ms), allocated : "
                << std::setw(10) << data.mem_size  << " bytes";
 
@@ -66,13 +100,11 @@ class grapple_data
 };
 
 struct grapple_system
-  // : public thrust::execution_policy<grapple_system>, thrust::system::omp::execution_policy<grapple_system>
-  : public thrust::system::omp::execution_policy<grapple_system>
+        : public thrust::execution_policy<grapple_system>
 {
 private:
 
-    // typedef thrust::execution_policy<grapple_system> Parent;
-    typedef thrust::system::omp::execution_policy<grapple_system> Parent;
+    typedef thrust::execution_policy<grapple_system> Parent;
 
     const static size_t STACK_SIZE = 100;
     cudaEvent_t tstart[STACK_SIZE];
@@ -81,6 +113,7 @@ private:
     int func_index[STACK_SIZE];
     int stack_frame;
     int abs_index;
+    grapple_type system;
 
     std::stack<int> stack;
 
@@ -90,7 +123,7 @@ public:
 
     std::vector<grapple_data> data;
 
-    grapple_system(void) : Parent(), stack_frame(0), abs_index(0)
+    grapple_system(void) : Parent(), stack_frame(0), abs_index(0), system(GRAPPLE_CPP)
     {
         data.reserve(100);
     }
@@ -120,7 +153,7 @@ public:
         cudaEventElapsedTime(&elapsed_time, tstart[stack_frame], tstop[stack_frame]);
 
         int index = stack.top();
-        data[index].set_data(stack_frame, func_index[stack_frame], elapsed_time);
+        data[index].set_data(system, stack_frame, func_index[stack_frame], elapsed_time);
         stack.pop();
     }
 
@@ -128,31 +161,63 @@ public:
     {
         int index = stack.top();
         data[index].mem_size += num_bytes;
-        return thrust::cuda::malloc<char>(num_bytes).get();
+        char* ret;
+
+        switch(system)
+        {
+          case GRAPPLE_CUDA :
+              ret = thrust::cuda::malloc<char>(num_bytes).get();
+              break;
+          default:
+              ret = thrust::malloc<char>(thrust::cpp::tag(), num_bytes).get();
+        }
+
+        return ret;
     }
 
     void deallocate(char *ptr, size_t num_bytes)
     {
-        thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
+        switch(system)
+        {
+          case GRAPPLE_CUDA :
+              thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
+              break;
+          default:
+              thrust::free(thrust::cpp::tag(), ptr);
+        }
     }
 
-    Parent& policy(thrust::omp::tag policy)
+    template<typename System1, typename System2>
+    thrust::system::cuda::detail::cross_system<System1,System2>
+    policy(thrust::system::cuda::detail::cross_system<System1,System2> policy)
     {
-        return reinterpret_cast<Parent&>(*this);
+        system = GRAPPLE_CROSS;
+        return policy;
     }
 
-    // template<typename System1, typename System2>
-    // thrust::system::cuda::detail::cross_system<System1,System2>
-    // policy(thrust::system::cuda::detail::cross_system<System1,System2> policy)
-    // {
-    //     return policy;
-    // }
+    Parent& policy(thrust::cpp::tag)
+    {
+        system = GRAPPLE_CPP;
+        return *this;
+    }
 
-    // template<typename ExecutionPolicy>
-    // ExecutionPolicy policy(ExecutionPolicy p)
-    // {
-    //   return p;
-    // }
+    Parent& policy(thrust::omp::tag)
+    {
+        system = GRAPPLE_OMP;
+        return *this;
+    }
+
+    Parent& policy(thrust::tbb::tag)
+    {
+        system = GRAPPLE_TBB;
+        return *this;
+    }
+
+    Parent& policy(thrust::cuda::tag)
+    {
+        system = GRAPPLE_CUDA;
+        return *this;
+    }
 
     void print(void)
     {
@@ -160,5 +225,86 @@ public:
             std::cout << std::right << "[" << std::setw(2) << i << "]" << std::left << data[i] << std::endl;
     }
 };
+
+template<typename Iterator>
+  typename thrust::detail::disable_if<
+    thrust::system::detail::generic::select_system1_exists<
+      typename thrust::iterator_system<Iterator>::type>::value,
+      typename thrust::iterator_system<Iterator>::type &
+  >::type
+get_system(Iterator)
+{
+    using thrust::system::detail::generic::select_system;
+
+    typedef typename thrust::iterator_system<Iterator>::type System;
+
+    System system;
+
+    return select_system(system);
+}
+
+template<typename Iterator1, typename Iterator2>
+typename thrust::detail::lazy_disable_if<
+  thrust::system::detail::generic::select_system2_exists<
+                        typename thrust::iterator_system<Iterator1>::type,
+                        typename thrust::iterator_system<Iterator2>::type>::value,
+  thrust::detail::minimum_system<typename thrust::iterator_system<Iterator1>::type,
+                                 typename thrust::iterator_system<Iterator2>::type>
+>::type
+get_system(Iterator1, Iterator2)
+{
+    using thrust::system::detail::generic::select_system;
+
+    typedef typename thrust::iterator_system<Iterator1>::type System1;
+    typedef typename thrust::iterator_system<Iterator2>::type System2;
+
+    System1 system1;
+    System2 system2;
+
+    return select_system(system1,system2);
+}
+
+template<typename Iterator1, typename Iterator2, typename Iterator3>
+typename thrust::detail::lazy_disable_if<
+  thrust::system::detail::generic::select_system3_exists<
+                        typename thrust::iterator_system<Iterator1>::type,
+                        typename thrust::iterator_system<Iterator2>::type,
+                        typename thrust::iterator_system<Iterator3>::type>::value,
+  thrust::detail::minimum_system<typename thrust::iterator_system<Iterator1>::type,
+                                 typename thrust::iterator_system<Iterator2>::type,
+                                 typename thrust::iterator_system<Iterator3>::type>
+>::type
+get_system(Iterator1, Iterator2, Iterator3)
+{
+    using thrust::system::detail::generic::select_system;
+
+    typedef typename thrust::iterator_system<Iterator1>::type System1;
+    typedef typename thrust::iterator_system<Iterator2>::type System2;
+    typedef typename thrust::iterator_system<Iterator3>::type System3;
+
+    System1 system1;
+    System2 system2;
+    System3 system3;
+
+    return select_system(system1,system2,system3);
+}
+
+template<typename System, typename Iterator1, typename Iterator2, typename Iterator3, typename Iterator4>
+System get_system(Iterator1, Iterator2, Iterator3, Iterator4)
+{
+    using thrust::system::detail::generic::select_system;
+
+    typedef typename thrust::iterator_system<Iterator1>::type System1;
+    typedef typename thrust::iterator_system<Iterator2>::type System2;
+    typedef typename thrust::iterator_system<Iterator3>::type System3;
+    typedef typename thrust::iterator_system<Iterator4>::type System4;
+
+    System1 system1;
+    System2 system2;
+    System3 system3;
+    System4 system4;
+
+    return select_system(system1,system2,system3,system4);
+}
 
 #include "grapple_includes.h"

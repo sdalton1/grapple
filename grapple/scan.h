@@ -27,7 +27,7 @@ OutputIterator inclusive_scan(grapple_system &exec,
                               OutputIterator result)
 {
     exec.start(THRUST_INCLUSIVE_SCAN);
-    OutputIterator ret = thrust::inclusive_scan(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::inclusive_scan(get_system(first,last,result), first, last, result);
     exec.stop();
 
     return ret;
@@ -43,7 +43,7 @@ OutputIterator inclusive_scan(grapple_system &exec,
                               AssociativeOperator binary_op)
 {
     exec.start(THRUST_INCLUSIVE_SCAN);
-    OutputIterator ret = thrust::inclusive_scan(thrust::cuda::par(exec), first, last, result, binary_op);
+    OutputIterator ret = thrust::inclusive_scan(get_system(first,last,result), first, last, result, binary_op);
     exec.stop();
 
     return ret;
@@ -57,7 +57,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               OutputIterator result)
 {
     exec.start(THRUST_EXCLUSIVE_SCAN);
-    OutputIterator ret = thrust::exclusive_scan(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::exclusive_scan(get_system(first,last,result), first, last, result);
     exec.stop();
 
     return ret;
@@ -73,7 +73,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               T init)
 {
     exec.start(THRUST_EXCLUSIVE_SCAN);
-    OutputIterator ret = thrust::exclusive_scan(thrust::cuda::par(exec), first, last, result, init);
+    OutputIterator ret = thrust::exclusive_scan(get_system(first,last,result), first, last, result, init);
     exec.stop();
 
     return ret;
@@ -91,7 +91,7 @@ OutputIterator exclusive_scan(grapple_system &exec,
                               AssociativeOperator binary_op)
 {
     exec.start(THRUST_EXCLUSIVE_SCAN);
-    OutputIterator ret = thrust::exclusive_scan(thrust::cuda::par(exec), first, last, result, init, binary_op);
+    OutputIterator ret = thrust::exclusive_scan(get_system(first,last,result), first, last, result, init, binary_op);
     exec.stop();
 
     return ret;
@@ -107,7 +107,7 @@ OutputIterator inclusive_scan_by_key(grapple_system &exec,
                                      OutputIterator result)
 {
     exec.start(THRUST_INCLUSIVE_SCAN_BY_KEY);
-    OutputIterator ret = thrust::inclusive_scan_by_key(thrust::cuda::par(exec), first1, last1, first2, result);
+    OutputIterator ret = thrust::inclusive_scan_by_key(get_system(first1,last1,first2,result), first1, last1, first2, result);
     exec.stop();
 
     return ret;
