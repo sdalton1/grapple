@@ -22,6 +22,7 @@
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
 #include <thrust/system/omp/execution_policy.h>
+#include <thrust/system/tbb/execution_policy.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -99,12 +100,11 @@ public:
     }
 };
 
-struct grapple_system
-        : public thrust::execution_policy<grapple_system>
+struct grapple_system : public thrust::detail::execution_policy_base<grapple_system>
 {
 private:
 
-    typedef thrust::execution_policy<grapple_system> Parent;
+    typedef thrust::detail::execution_policy_base<grapple_system> Parent;
 
     const static size_t STACK_SIZE = 100;
     cudaEvent_t tstart[STACK_SIZE];
@@ -195,28 +195,32 @@ public:
         return policy;
     }
 
-    Parent& policy(thrust::cpp::tag)
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::cpp::detail::execution_policy>
+    policy(thrust::cpp::tag)
     {
         system = GRAPPLE_CPP;
-        return *this;
+        return thrust::cpp::par(*this);
     }
 
-    Parent& policy(thrust::omp::tag)
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
+    policy(thrust::omp::tag)
     {
         system = GRAPPLE_OMP;
-        return *this;
+        return thrust::omp::par(*this);
     }
 
-    Parent& policy(thrust::tbb::tag)
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
+    policy(thrust::tbb::tag)
     {
         system = GRAPPLE_TBB;
-        return *this;
+        return thrust::tbb::par(*this);
     }
 
-    Parent& policy(thrust::cuda::tag)
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
+    policy(thrust::cuda::tag)
     {
         system = GRAPPLE_CUDA;
-        return *this;
+        return thrust::cuda::par(*this);
     }
 
     void print(void)
@@ -226,85 +230,5 @@ public:
     }
 };
 
-template<typename Iterator>
-  typename thrust::detail::disable_if<
-    thrust::system::detail::generic::select_system1_exists<
-      typename thrust::iterator_system<Iterator>::type>::value,
-      typename thrust::iterator_system<Iterator>::type &
-  >::type
-get_system(Iterator)
-{
-    using thrust::system::detail::generic::select_system;
-
-    typedef typename thrust::iterator_system<Iterator>::type System;
-
-    System system;
-
-    return select_system(system);
-}
-
-template<typename Iterator1, typename Iterator2>
-typename thrust::detail::lazy_disable_if<
-  thrust::system::detail::generic::select_system2_exists<
-                        typename thrust::iterator_system<Iterator1>::type,
-                        typename thrust::iterator_system<Iterator2>::type>::value,
-  thrust::detail::minimum_system<typename thrust::iterator_system<Iterator1>::type,
-                                 typename thrust::iterator_system<Iterator2>::type>
->::type
-get_system(Iterator1, Iterator2)
-{
-    using thrust::system::detail::generic::select_system;
-
-    typedef typename thrust::iterator_system<Iterator1>::type System1;
-    typedef typename thrust::iterator_system<Iterator2>::type System2;
-
-    System1 system1;
-    System2 system2;
-
-    return select_system(system1,system2);
-}
-
-template<typename Iterator1, typename Iterator2, typename Iterator3>
-typename thrust::detail::lazy_disable_if<
-  thrust::system::detail::generic::select_system3_exists<
-                        typename thrust::iterator_system<Iterator1>::type,
-                        typename thrust::iterator_system<Iterator2>::type,
-                        typename thrust::iterator_system<Iterator3>::type>::value,
-  thrust::detail::minimum_system<typename thrust::iterator_system<Iterator1>::type,
-                                 typename thrust::iterator_system<Iterator2>::type,
-                                 typename thrust::iterator_system<Iterator3>::type>
->::type
-get_system(Iterator1, Iterator2, Iterator3)
-{
-    using thrust::system::detail::generic::select_system;
-
-    typedef typename thrust::iterator_system<Iterator1>::type System1;
-    typedef typename thrust::iterator_system<Iterator2>::type System2;
-    typedef typename thrust::iterator_system<Iterator3>::type System3;
-
-    System1 system1;
-    System2 system2;
-    System3 system3;
-
-    return select_system(system1,system2,system3);
-}
-
-template<typename System, typename Iterator1, typename Iterator2, typename Iterator3, typename Iterator4>
-System get_system(Iterator1, Iterator2, Iterator3, Iterator4)
-{
-    using thrust::system::detail::generic::select_system;
-
-    typedef typename thrust::iterator_system<Iterator1>::type System1;
-    typedef typename thrust::iterator_system<Iterator2>::type System2;
-    typedef typename thrust::iterator_system<Iterator3>::type System3;
-    typedef typename thrust::iterator_system<Iterator4>::type System4;
-
-    System1 system1;
-    System2 system2;
-    System3 system3;
-    System4 system4;
-
-    return select_system(system1,system2,system3,system4);
-}
-
+#include "system_select.h"
 #include "grapple_includes.h"

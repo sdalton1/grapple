@@ -29,7 +29,7 @@ OutputIterator gather(grapple_system &exec,
                       OutputIterator                                              result)
 {
     exec.start(THRUST_GATHER);
-    OutputIterator ret = thrust::gather(thrust::cuda::par(exec), map_first, map_last, input_first, result);
+    OutputIterator ret = thrust::gather(exec.policy(get_system(map_first,input_first,result)), map_first, map_last, input_first, result);
     exec.stop();
 
     return ret;
@@ -47,7 +47,7 @@ OutputIterator gather_if(grapple_system &exec,
                          OutputIterator                                              result)
 {
     exec.start(THRUST_GATHER_IF);
-    OutputIterator ret = thrust::gather_if(thrust::cuda::par(exec), map_first, map_last, stencil, input_first, result);
+    OutputIterator ret = thrust::gather_if(exec.policy(get_system(map_first,stencil,input_first,result)), map_first, map_last, stencil, input_first, result);
     exec.stop();
 
     return ret;
@@ -67,7 +67,7 @@ OutputIterator gather_if(grapple_system &exec,
                          Predicate                                                   pred)
 {
     exec.start(THRUST_GATHER_IF);
-    OutputIterator ret = thrust::gather_if(thrust::cuda::par(exec), map_first, map_last, stencil, input_first, result, pred);
+    OutputIterator ret = thrust::gather_if(exec.policy(get_system(map_first,stencil,input_first,result)), map_first, map_last, stencil, input_first, result, pred);
     exec.stop();
 
     return ret;

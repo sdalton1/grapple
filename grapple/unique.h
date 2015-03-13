@@ -26,7 +26,7 @@ ForwardIterator unique(grapple_system &exec,
                        ForwardIterator last)
 {
     exec.start(THRUST_UNIQUE);
-    ForwardIterator ret = thrust::unique(thrust::cuda::par(exec), first, last);
+    ForwardIterator ret = thrust::unique(exec.policy(get_system(first)), first, last);
     exec.stop();
 
     return ret;
@@ -41,7 +41,7 @@ ForwardIterator unique(grapple_system &exec,
                        BinaryPredicate binary_pred)
 {
     exec.start(THRUST_UNIQUE);
-    ForwardIterator ret = thrust::unique(thrust::cuda::par(exec), first, last, binary_pred);
+    ForwardIterator ret = thrust::unique(exec.policy(get_system(first)), first, last, binary_pred);
     exec.stop();
 
     return ret;
@@ -55,7 +55,7 @@ OutputIterator unique_copy(grapple_system &exec,
                            OutputIterator result)
 {
     exec.start(THRUST_UNIQUE_COPY);
-    OutputIterator ret = thrust::unique_copy(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::unique_copy(exec.policy(get_system(first,result)), first, last, result);
     exec.stop();
 
     return ret;
@@ -72,7 +72,7 @@ OutputIterator unique_copy(grapple_system &exec,
                            BinaryPredicate binary_pred)
 {
     exec.start(THRUST_UNIQUE_COPY);
-    OutputIterator ret = thrust::unique_copy(thrust::cuda::par(exec), first, last, result, binary_pred);
+    OutputIterator ret = thrust::unique_copy(exec.policy(get_system(first,result)), first, last, result, binary_pred);
     exec.stop();
 
     return ret;
@@ -87,7 +87,7 @@ unique_by_key(grapple_system &exec,
               ForwardIterator2 values_first)
 {
     exec.start(THRUST_UNIQUE_BY_KEY);
-    thrust::pair<ForwardIterator1,ForwardIterator2> ret = thrust::unique_by_key(thrust::cuda::par(exec),
+    thrust::pair<ForwardIterator1,ForwardIterator2> ret = thrust::unique_by_key(exec.policy(get_system(keys_first,values_first)),
                                                         keys_first, keys_last, values_first);
     exec.stop();
 
@@ -105,7 +105,7 @@ unique_by_key(grapple_system &exec,
               BinaryPredicate binary_pred)
 {
     exec.start(THRUST_UNIQUE_BY_KEY);
-    thrust::pair<ForwardIterator1,ForwardIterator2> ret = thrust::unique_by_key(thrust::cuda::par(exec),
+    thrust::pair<ForwardIterator1,ForwardIterator2> ret = thrust::unique_by_key(exec.policy(get_system(keys_first,values_first)),
                                                         keys_first, keys_last, values_first, binary_pred);
     exec.stop();
 
@@ -125,7 +125,7 @@ unique_by_key_copy(grapple_system &exec,
                    OutputIterator2 values_result)
 {
     exec.start(THRUST_UNIQUE_BY_KEY_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::unique_by_key_copy(thrust::cuda::par(exec),
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::unique_by_key_copy(exec.policy(get_system(keys_first,values_first,keys_result,values_result)),
                                                         keys_first, keys_last, values_first, keys_result,
                                                         values_result);
     exec.stop();
@@ -148,7 +148,7 @@ unique_by_key_copy(grapple_system &exec,
                    BinaryPredicate binary_pred)
 {
     exec.start(THRUST_UNIQUE_BY_KEY_COPY);
-    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::unique_by_key_copy(thrust::cuda::par(exec),
+    thrust::pair<OutputIterator1,OutputIterator2> ret = thrust::unique_by_key_copy(exec.policy(get_system(keys_first,values_first,keys_result,values_result)),
                                                         keys_first, keys_last, values_first, keys_result,
                                                         values_result, binary_pred);
     exec.stop();

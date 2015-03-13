@@ -27,7 +27,7 @@ InputIterator find(grapple_system &exec,
                    const T& value)
 {
     exec.start(THRUST_FIND);
-    InputIterator ret = thrust::find(exec.policy(), first, last, value);
+    InputIterator ret = thrust::find(exec.policy(get_system(first)), first, last, value);
     exec.stop();
 
     return ret;
@@ -40,7 +40,7 @@ InputIterator find_if(grapple_system &exec,
                       Predicate pred)
 {
     exec.start(THRUST_FIND_IF);
-    InputIterator ret = thrust::find_if(exec.policy(), first, last, pred);
+    InputIterator ret = thrust::find_if(exec.policy(get_system(first)), first, last, pred);
     exec.stop();
 
     return ret;
@@ -53,7 +53,7 @@ InputIterator find_if_not(grapple_system &exec,
                           Predicate pred)
 {
     exec.start(THRUST_FIND_IF_NOT);
-    InputIterator ret = thrust::find_if_not(exec.policy(), first, last, pred);
+    InputIterator ret = thrust::find_if_not(exec.policy(get_system(first)), first, last, pred);
     exec.stop();
 
     return ret;

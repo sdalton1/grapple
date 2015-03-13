@@ -25,7 +25,7 @@ void sequence(grapple_system &exec,
               ForwardIterator last)
 {
     exec.start(THRUST_SEQUENCE);
-    thrust::sequence(thrust::cuda::par(exec), first, last);
+    thrust::sequence(exec.policy(get_system(first)), first, last);
     exec.stop();
 }
 
@@ -36,7 +36,7 @@ void sequence(grapple_system &exec,
               T init)
 {
     exec.start(THRUST_SEQUENCE);
-    thrust::sequence(thrust::cuda::par(exec), first, last, init);
+    thrust::sequence(exec.policy(get_system(first)), first, last, init);
     exec.stop();
 }
 
@@ -48,7 +48,7 @@ void sequence(grapple_system &exec,
               T step)
 {
     exec.start(THRUST_SEQUENCE);
-    thrust::sequence(thrust::cuda::par(exec), first, last, init, step);
+    thrust::sequence(exec.policy(get_system(first)), first, last, init, step);
     exec.stop();
 }
 

@@ -30,7 +30,7 @@ void scatter(grapple_system &exec,
              RandomAccessIterator result)
 {
     exec.start(THRUST_SCATTER);
-    thrust::scatter(thrust::cuda::par(exec), first, last, map, result);
+    thrust::scatter(exec.policy(get_system(first,map,result)), first, last, map, result);
     exec.stop();
 }
 
@@ -46,7 +46,7 @@ void scatter_if(grapple_system &exec,
                 RandomAccessIterator output)
 {
     exec.start(THRUST_SCATTER_IF);
-    thrust::scatter_if(thrust::cuda::par(exec), first, last, map, stencil, output);
+    thrust::scatter_if(exec.policy(get_system(first,map,stencil,output)), first, last, map, stencil, output);
     exec.stop();
 }
 
@@ -64,7 +64,7 @@ void scatter_if(grapple_system &exec,
                 Predicate pred)
 {
     exec.start(THRUST_SCATTER_IF);
-    thrust::scatter_if(thrust::cuda::par(exec), first, last, map, stencil, output, pred);
+    thrust::scatter_if(exec.policy(get_system(first,map,stencil,output)), first, last, map, stencil, output, pred);
     exec.stop();
 }
 

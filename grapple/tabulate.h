@@ -26,7 +26,7 @@ template<typename ForwardIterator, typename UnaryOperation>
                 UnaryOperation unary_op)
 {
     exec.start(THRUST_TABULATE);
-    thrust::tabulate(thrust::cuda::par(exec), first, last, unary_op);
+    thrust::tabulate(exec.policy(get_system(first)), first, last, unary_op);
     exec.stop();
 }
 

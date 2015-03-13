@@ -26,7 +26,7 @@ void fill(grapple_system &exec,
           const T &value)
 {
     exec.start(THRUST_FILL);
-    thrust::fill(get_system(first,last), first, last, value);
+    thrust::fill(exec.policy(get_system(first)), first, last, value);
     exec.stop();
 }
 
@@ -37,7 +37,7 @@ OutputIterator fill_n(grapple_system &exec,
                       const T &value)
 {
     exec.start(THRUST_FILL_N);
-    OutputIterator ret = thrust::fill_n(get_system(first), first, n, value);
+    OutputIterator ret = thrust::fill_n(exec.policy(get_system(first)), first, n, value);
     exec.stop();
 
     return ret;

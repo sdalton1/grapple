@@ -26,7 +26,7 @@ OutputIterator copy(grapple_system &exec,
                     OutputIterator result)
 {
     exec.start(THRUST_COPY);
-    OutputIterator ret = thrust::copy(exec.policy(get_system(first,last,result)), first, last, result);
+    OutputIterator ret = thrust::copy(exec.policy(get_system(first,result)), first, last, result);
     exec.stop();
 
     return ret;
@@ -39,7 +39,7 @@ OutputIterator copy_n(grapple_system &exec,
                       OutputIterator result)
 {
     exec.start(THRUST_COPY_N);
-    OutputIterator ret = thrust::copy_n(get_system(first,result), first, n, result);
+    OutputIterator ret = thrust::copy_n(exec.policy(get_system(first,result)), first, n, result);
     exec.stop();
 
     return ret;
@@ -53,7 +53,7 @@ OutputIterator copy_if(grapple_system &exec,
                        Predicate pred)
 {
     exec.start(THRUST_COPY_IF);
-    OutputIterator ret = thrust::copy_if(get_system(first,last,result), first, last, result, pred);
+    OutputIterator ret = thrust::copy_if(exec.policy(get_system(first,result)), first, last, result, pred);
     exec.stop();
 
     return ret;
@@ -68,7 +68,7 @@ OutputIterator copy_if(grapple_system &exec,
                        Predicate pred)
 {
     exec.start(THRUST_COPY_IF);
-    OutputIterator ret = thrust::copy_if(get_system(first,last,stencil,result), first, last, stencil, result, pred);
+    OutputIterator ret = thrust::copy_if(exec.policy(get_system(first,stencil,result)), first, last, stencil, result, pred);
     exec.stop();
 
     return ret;

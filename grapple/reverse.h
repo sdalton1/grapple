@@ -25,7 +25,7 @@ void reverse(grapple_system &exec,
              BidirectionalIterator last)
 {
     exec.start(THRUST_REVERSE);
-    thrust::reverse(thrust::cuda::par(exec), first, last);
+    thrust::reverse(exec.policy(get_system(first)), first, last);
     exec.stop();
 }
 
@@ -36,7 +36,7 @@ OutputIterator reverse_copy(grapple_system &exec,
                             OutputIterator result)
 {
     exec.start(THRUST_REVERSE_COPY);
-    OutputIterator ret = thrust::reverse_copy(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::reverse_copy(exec.policy(get_system(first,result)), first, last, result);
     exec.stop();
 
     return ret;

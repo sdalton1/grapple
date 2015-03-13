@@ -27,7 +27,7 @@ ForwardIterator uninitialized_copy(grapple_system &exec,
                                    ForwardIterator result)
 {
     exec.start(THRUST_UNINITIALIZED_COPY);
-    ForwardIterator ret = thrust::uninitialized_copy(thrust::cuda::par(exec), first, last, result);
+    ForwardIterator ret = thrust::uninitialized_copy(exec.policy(get_system(first,result)), first, last, result);
     exec.stop();
 
     return ret;
@@ -40,7 +40,7 @@ ForwardIterator uninitialized_copy_n(grapple_system &exec,
                                      ForwardIterator result)
 {
     exec.start(THRUST_UNINITIALIZED_COPY_N);
-    ForwardIterator ret = thrust::uninitialized_copy_n(thrust::cuda::par(exec), first, n, result);
+    ForwardIterator ret = thrust::uninitialized_copy_n(exec.policy(get_system(first,result)), first, n, result);
     exec.stop();
 
     return ret;

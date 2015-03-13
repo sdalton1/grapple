@@ -27,7 +27,7 @@ InputIterator for_each(grapple_system &exec,
                        UnaryFunction f)
 {
     exec.start(THRUST_FOR_EACH);
-    InputIterator ret = thrust::for_each(thrust::cuda::par(exec), first, last, f);
+    InputIterator ret = thrust::for_each(exec.policy(get_system(first)), first, last, f);
     exec.stop();
 
     return ret;
@@ -42,7 +42,7 @@ InputIterator for_each_n(grapple_system &exec,
                          UnaryFunction f)
 {
     exec.start(THRUST_FOR_EACH_N);
-    InputIterator ret = thrust::for_each_n(thrust::cuda::par(exec), first, n, f);
+    InputIterator ret = thrust::for_each_n(exec.policy(get_system(first)), first, n, f);
     exec.stop();
 
     return ret;

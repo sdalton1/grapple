@@ -26,7 +26,7 @@ OutputIterator adjacent_difference(grapple_system &exec,
                                    OutputIterator result)
 {
     exec.start(THRUST_ADJACENT_DIFFERENCE);
-    OutputIterator ret = thrust::adjacent_difference(thrust::cuda::par(exec), first, last, result);
+    OutputIterator ret = thrust::adjacent_difference(exec.policy(get_system(first,result)), first, last, result);
     exec.stop();
 
     return ret;
@@ -39,7 +39,7 @@ OutputIterator adjacent_difference(grapple_system &exec,
                                    BinaryFunction binary_op)
 {
     exec.start(THRUST_ADJACENT_DIFFERENCE);
-    OutputIterator ret = thrust::adjacent_difference(thrust::cuda::par(exec), first, last, result, binary_op);
+    OutputIterator ret = thrust::adjacent_difference(exec.policy(get_system(first,result)), first, last, result, binary_op);
     exec.stop();
 
     return ret;
