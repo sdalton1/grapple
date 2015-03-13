@@ -33,25 +33,21 @@
 #include <vector>
 
 #include "grapple_map.h"
-
-enum grapple_type
-{
-    GRAPPLE_CPP,
-    GRAPPLE_OMP,
-    GRAPPLE_TBB,
-    GRAPPLE_CUDA,
-    GRAPPLE_CROSS,
-};
+#include "system_select.h"
 
 class grapple_data
 {
-public:
+private:
+
     grapple_type system;
     int   func_id;
     int   stack_frame;
-    int   mem_size;
     float time;
     cudaStream_t stream;
+
+public:
+
+    int   mem_size;
 
     grapple_data(void) : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), mem_size(0), time(0) {}
 
@@ -66,29 +62,8 @@ public:
     friend std::ostream &operator<<( std::ostream &output,
                                      const grapple_data &data )
     {
-        std::string funcname(grapple_map.find(data.func_id));
-        std::string sysname;
-
-        switch(data.system)
-        {
-          case GRAPPLE_CPP :
-              sysname = "cpp ";
-              break;
-          case GRAPPLE_TBB :
-              sysname = "tbb ";
-              break;
-          case GRAPPLE_OMP :
-              sysname = "omp ";
-              break;
-          case GRAPPLE_CUDA :
-              sysname = "cuda";
-              break;
-          case GRAPPLE_CROSS :
-              sysname = "d->h";
-              break;
-          default:
-              sysname = "unk ";
-        }
+        std::string funcname(grapple_thrust_map.find(data.func_id));
+        std::string sysname(grapple_system_map.find(data.system));
 
         output << "[" << sysname << "] "
                << std::string(data.stack_frame, '\t')
@@ -100,11 +75,11 @@ public:
     }
 };
 
-struct grapple_system : public thrust::detail::execution_policy_base<grapple_system>
+struct grapple_system : public thrust::execution_policy<grapple_system>
 {
 private:
 
-    typedef thrust::detail::execution_policy_base<grapple_system> Parent;
+    typedef thrust::execution_policy<grapple_system> Parent;
 
     const static size_t STACK_SIZE = 100;
     cudaEvent_t tstart[STACK_SIZE];
@@ -187,11 +162,19 @@ public:
         }
     }
 
-    template<typename System1, typename System2>
-    thrust::system::cuda::detail::cross_system<System1,System2>
-    policy(thrust::system::cuda::detail::cross_system<System1,System2> policy)
+    template<typename System>
+    thrust::system::cuda::detail::cross_system<thrust::cuda::tag,System>
+    policy(thrust::system::cuda::detail::cross_system<thrust::cuda::tag,System> policy)
     {
-        system = GRAPPLE_CROSS;
+        system = GRAPPLE_D2H;
+        return policy;
+    }
+
+    template<typename System>
+    thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag>
+    policy(thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag> policy)
+    {
+        system = GRAPPLE_H2D;
         return policy;
     }
 
@@ -230,5 +213,4 @@ public:
     }
 };
 
-#include "system_select.h"
 #include "grapple_includes.h"

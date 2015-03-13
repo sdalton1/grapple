@@ -115,7 +115,7 @@ enum
     THRUST_LAST_KEY,
 };
 
-class grapple_mapper
+class grapple_thrust_mapper
 {
     std::map<std::string,int> create_map(void)
     {
@@ -245,7 +245,7 @@ class grapple_mapper
 
   public:
 
-    grapple_mapper(void)
+    grapple_thrust_mapper(void)
     {
       thrustMap = create_map();
       thrustReverseMap = create_reverse_map();
@@ -267,4 +267,50 @@ class grapple_mapper
     std::map<int,std::string> thrustReverseMap;
 };
 
-static grapple_mapper grapple_map;
+static grapple_thrust_mapper grapple_thrust_map;
+
+
+enum grapple_type
+{
+    GRAPPLE_CPP,
+    GRAPPLE_OMP,
+    GRAPPLE_TBB,
+    GRAPPLE_CUDA,
+    GRAPPLE_D2H,
+    GRAPPLE_H2D,
+};
+
+class grapple_system_mapper
+{
+    std::map<int,std::string> create_map(void)
+    {
+        std::map<int,std::string> m;
+
+        m[GRAPPLE_CPP]     = "cpp ";
+        m[GRAPPLE_TBB]     = "tbb ";
+        m[GRAPPLE_OMP]     = "omp ";
+        m[GRAPPLE_CUDA]    = "cuda";
+        m[GRAPPLE_D2H]     = "d->h";
+        m[GRAPPLE_H2D]     = "h->d";
+
+        return m;
+    }
+
+  public:
+
+    grapple_system_mapper(void)
+    {
+      systemMap = create_map();
+    }
+
+    std::string find(int index)
+    {
+        return systemMap.find(index)->second;
+    }
+
+  private:
+
+    std::map<int,std::string> systemMap;
+};
+
+static grapple_system_mapper grapple_system_map;
