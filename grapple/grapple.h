@@ -162,6 +162,11 @@ public:
         }
     }
 
+    Parent& policy(void)
+    {
+        return *this;
+    }
+
     template<typename System>
     thrust::system::cuda::detail::cross_system<thrust::cuda::tag,System>
     policy(thrust::system::cuda::detail::cross_system<thrust::cuda::tag,System> policy)
