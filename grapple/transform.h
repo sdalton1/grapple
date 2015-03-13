@@ -29,7 +29,7 @@ OutputIterator transform(grapple_system &exec,
                          UnaryFunction op)
 {
     exec.start(THRUST_TRANSFORM);
-    OutputIterator ret = thrust::transform_if(exec.policy(get_system(first,result)), first, last, result, op);
+    OutputIterator ret = thrust::transform(exec.policy(get_system(first,result)), first, last, result, op);
     exec.stop();
 
     return ret;
@@ -46,7 +46,7 @@ OutputIterator transform(grapple_system &exec,
                          BinaryFunction op)
 {
     exec.start(THRUST_TRANSFORM);
-    OutputIterator ret = thrust::transform_if(exec.policy(get_system(first1,first2,result)), first1, last1, first2, result, op);
+    OutputIterator ret = thrust::transform(exec.policy(get_system(first1,first2,result)), first1, last1, first2, result, op);
     exec.stop();
 
     return ret;

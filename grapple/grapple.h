@@ -49,7 +49,7 @@ public:
 
     int   mem_size;
 
-    grapple_data(void) : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), mem_size(0), time(0) {}
+    grapple_data(void) : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), time(0.0), mem_size(0) {}
 
     void set_data(grapple_type stack_system, int stack_index, int func_index, float elapsed_time)
     {
@@ -122,7 +122,7 @@ public:
 
     void stop(void)
     {
-        float elapsed_time;
+        float elapsed_time = 0.0;
         cudaEventRecord(tstop[--stack_frame], 0);
         cudaEventSynchronize(tstop[stack_frame]);
         cudaEventElapsedTime(&elapsed_time, tstart[stack_frame], tstop[stack_frame]);
@@ -136,7 +136,7 @@ public:
     {
         int index = stack.top();
         data[index].mem_size += num_bytes;
-        char* ret;
+        char* ret = NULL;
 
         switch(system)
         {
