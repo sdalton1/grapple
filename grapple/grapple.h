@@ -13,11 +13,14 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 */
+#pragma once
 
 #include <cuda.h>
 
 #include <thrust/execution_policy.h>
 #include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+#include <thrust/device_allocator.h>
 
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
@@ -132,19 +135,22 @@ public:
         stack.pop();
     }
 
-    char *allocate(std::ptrdiff_t num_bytes)
+    char *allocate(std::ptrdiff_t num_bytes, bool service = true)
     {
         int index = stack.top();
         data[index].mem_size += num_bytes;
         char* ret = NULL;
 
-        switch(system)
+        if(service)
         {
-          case GRAPPLE_CUDA :
-              ret = thrust::cuda::malloc<char>(num_bytes).get();
-              break;
-          default:
-              ret = thrust::malloc<char>(thrust::cpp::tag(), num_bytes).get();
+            switch(system)
+            {
+            case GRAPPLE_CUDA :
+                ret = thrust::device_malloc<char>(num_bytes).get();
+                break;
+            default:
+                ret = thrust::malloc<char>(thrust::cpp::tag(), num_bytes).get();
+            }
         }
 
         return ret;
@@ -154,11 +160,11 @@ public:
     {
         switch(system)
         {
-          case GRAPPLE_CUDA :
-              thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
-              break;
-          default:
-              thrust::free(thrust::cpp::tag(), ptr);
+        case GRAPPLE_CUDA :
+            thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
+            break;
+        default:
+            thrust::free(thrust::cpp::tag(), ptr);
         }
     }
 
@@ -219,3 +225,5 @@ public:
 };
 
 #include "grapple_includes.h"
+
+
