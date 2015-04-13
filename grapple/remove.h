@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/remove.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator,
          typename T>
 ForwardIterator remove(grapple_system &exec,
@@ -112,5 +115,7 @@ OutputIterator remove_copy_if(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

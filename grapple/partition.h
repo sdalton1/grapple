@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/partition.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator,
          typename Predicate>
 ForwardIterator partition(grapple_system &exec,
@@ -183,5 +186,7 @@ bool is_partitioned(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

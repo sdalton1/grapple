@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/mismatch.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1, typename InputIterator2>
 thrust::pair<InputIterator1, InputIterator2> mismatch(grapple_system &exec,
                                                       InputIterator1 first1,
@@ -45,5 +48,7 @@ thrust::pair<InputIterator1, InputIterator2> mismatch(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

@@ -1,3 +1,5 @@
+#include <grapple/grapple.h>
+
 #include <thrust/device_vector.h>
 #include <thrust/extrema.h>
 #include <thrust/host_vector.h>
@@ -12,10 +14,8 @@
 #include <iostream>
 #include <iterator>
 
-#include <grapple/grapple.h>
-
 template<typename Policy, typename Array>
-thrust::tuple<int,int> compute_mode(const Policy& exec,
+thrust::tuple<int,int> compute_mode(Policy& exec,
                                     const Array& d_data)
 {
     Array d_data_copy(d_data);
@@ -102,8 +102,8 @@ int main(void)
 
     {
       int mode, occurrences;
-      grapple_system grapple;
-      thrust::tie(mode, occurrences) = compute_mode(grapple, d_data);
+      grapple::grapple_system exec;
+      thrust::tie(mode, occurrences) = compute_mode(exec, d_data);
       std::cout << "Modal value " << mode << " occurs " << occurrences << " times " << std::endl;
     }
 

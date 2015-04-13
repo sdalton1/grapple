@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/tabulate.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator, typename UnaryOperation>
   void tabulate(grapple_system &exec,
                 ForwardIterator first,
@@ -28,5 +31,7 @@ template<typename ForwardIterator, typename UnaryOperation>
     exec.start(THRUST_TABULATE);
     thrust::tabulate(exec.policy(get_system(first)), first, last, unary_op);
     exec.stop();
+}
+
 }
 

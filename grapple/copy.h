@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/copy.h>
 
+namespace grapple
+{
+
 template<typename InputIterator, typename OutputIterator>
 OutputIterator copy(grapple_system &exec,
                     InputIterator first,
@@ -88,5 +91,7 @@ OutputIterator copy_if(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

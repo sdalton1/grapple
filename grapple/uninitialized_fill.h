@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/uninitialized_fill.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator, typename T>
 void uninitialized_fill(grapple_system &exec,
                         ForwardIterator first,
@@ -47,4 +50,5 @@ ForwardIterator uninitialized_fill_n(grapple_system &exec,
     return ret;
 }
 
+}
 

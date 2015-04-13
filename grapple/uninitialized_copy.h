@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/uninitialized_copy.h>
 
+namespace grapple
+{
+
 template<typename InputIterator, typename ForwardIterator>
 ForwardIterator uninitialized_copy(grapple_system &exec,
                                    InputIterator first,
@@ -44,5 +47,7 @@ ForwardIterator uninitialized_copy_n(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

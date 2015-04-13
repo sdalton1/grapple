@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/adjacent_difference.h>
 
+namespace grapple
+{
+
 template<typename InputIterator, typename OutputIterator>
 OutputIterator adjacent_difference(grapple_system &exec,
                                    InputIterator first, InputIterator last,
@@ -44,3 +47,6 @@ OutputIterator adjacent_difference(grapple_system &exec,
 
     return ret;
 }
+
+}
+

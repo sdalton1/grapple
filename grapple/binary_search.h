@@ -1,6 +1,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/binary_search.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator, typename LessThanComparable>
 ForwardIterator lower_bound(grapple_system &exec,
                             ForwardIterator first,
@@ -203,5 +206,7 @@ OutputIterator binary_search(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

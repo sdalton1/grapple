@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/scatter.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1,
          typename InputIterator2,
          typename RandomAccessIterator>
@@ -66,5 +69,7 @@ void scatter_if(grapple_system &exec,
     exec.start(THRUST_SCATTER_IF);
     thrust::scatter_if(exec.policy(get_system(first,map,stencil,output)), first, last, map, stencil, output, pred);
     exec.stop();
+}
+
 }
 

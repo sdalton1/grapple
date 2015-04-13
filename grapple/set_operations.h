@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/set_operations.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator>
@@ -381,3 +384,4 @@ set_union_by_key(grapple_system &exec,
     return ret;
 }
 
+} // end namespace grapple

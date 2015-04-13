@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/generate.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator,
          typename Generator>
 void generate(grapple_system &exec,
@@ -48,3 +51,4 @@ OutputIterator generate_n(grapple_system &exec,
     return ret;
 }
 
+}

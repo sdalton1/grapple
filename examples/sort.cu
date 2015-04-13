@@ -5,7 +5,7 @@
 #include <iomanip>
 
 // Helper routines
-#include "grapple/grapple.h"
+#include <grapple/grapple.h>
 
 void initialize(thrust::device_vector<int>& v)
 {
@@ -99,49 +99,49 @@ int main(void)
 {
     size_t N = 1<<10;
 
-    grapple_system grapple;
+    grapple::grapple_system exec;
 
     {
         thrust::device_vector<int> keys(N);
         initialize(keys);
-        thrust::sort(grapple, keys.begin(), keys.end());
+        thrust::sort(exec, keys.begin(), keys.end());
     }
 
     {
         thrust::device_vector<int> keys(N);
         initialize(keys);
-        thrust::sort(grapple, keys.begin(), keys.end(), thrust::greater<int>());
+        thrust::sort(exec, keys.begin(), keys.end(), thrust::greater<int>());
     }
 
     {
         thrust::device_vector<int> keys(N);
         initialize(keys);
-        thrust::sort(grapple, keys.begin(), keys.end(), evens_before_odds());
+        thrust::sort(exec, keys.begin(), keys.end(), evens_before_odds());
     }
 
     {
         thrust::device_vector<float> keys(N);
         initialize(keys);
-        thrust::sort(grapple, keys.begin(), keys.end());
+        thrust::sort(exec, keys.begin(), keys.end());
     }
 
     {
         thrust::device_vector< thrust::pair<int,int> > keys(N);
         initialize(keys);
-        thrust::sort(grapple, keys.begin(), keys.end());
+        thrust::sort(exec, keys.begin(), keys.end());
     }
 
     {
         thrust::device_vector<int> keys(N);
         thrust::device_vector<int> values(N);
-        thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin());
+        thrust::sort_by_key(exec, keys.begin(), keys.end(), values.begin());
     }
 
     {
         thrust::device_vector<int> keys(N);
         thrust::device_vector<int> values(N);
         initialize(keys, values);
-        thrust::sort_by_key(grapple, keys.begin(), keys.end(), values.begin(), thrust::greater<int>());
+        thrust::sort_by_key(exec, keys.begin(), keys.end(), values.begin(), thrust::greater<int>());
     }
 
     return 0;

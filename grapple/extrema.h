@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/extrema.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator>
 ForwardIterator min_element(grapple_system &exec, ForwardIterator first, ForwardIterator last)
 {
@@ -77,5 +80,7 @@ thrust::pair<ForwardIterator,ForwardIterator> minmax_element(grapple_system &exe
     exec.stop();
 
     return ret;
+}
+
 }
 

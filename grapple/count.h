@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/count.h>
 
+namespace grapple
+{
+
 template<typename InputIterator, typename EqualityComparable>
 typename thrust::iterator_traits<InputIterator>::difference_type
 count(grapple_system &exec, InputIterator first, InputIterator last, const EqualityComparable& value)
@@ -41,5 +44,7 @@ count_if(grapple_system &exec, InputIterator first, InputIterator last, Predicat
     exec.stop();
 
     return ret;
+}
+
 }
 

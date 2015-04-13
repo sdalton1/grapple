@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/sequence.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator>
 void sequence(grapple_system &exec,
               ForwardIterator first,
@@ -50,5 +53,7 @@ void sequence(grapple_system &exec,
     exec.start(THRUST_SEQUENCE);
     thrust::sequence(exec.policy(get_system(first)), first, last, init, step);
     exec.stop();
+}
+
 }
 

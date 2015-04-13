@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/replace.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator, typename T>
 void replace(grapple_system &exec,
              ForwardIterator first, ForwardIterator last,
@@ -95,5 +98,7 @@ OutputIterator replace_copy_if(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

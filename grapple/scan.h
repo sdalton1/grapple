@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/scan.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename OutputIterator>
 OutputIterator inclusive_scan(grapple_system &exec,
@@ -225,5 +228,7 @@ OutputIterator exclusive_scan_by_key(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/reverse.h>
 
+namespace grapple
+{
+
 template<typename BidirectionalIterator>
 void reverse(grapple_system &exec,
              BidirectionalIterator first,
@@ -40,5 +43,7 @@ OutputIterator reverse_copy(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

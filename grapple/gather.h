@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/gather.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename RandomAccessIterator,
          typename OutputIterator>
@@ -71,5 +74,7 @@ OutputIterator gather_if(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

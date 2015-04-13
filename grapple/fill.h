@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/fill.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator, typename T>
 void fill(grapple_system &exec,
           ForwardIterator first,
@@ -41,5 +44,7 @@ OutputIterator fill_n(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

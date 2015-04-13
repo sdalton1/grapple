@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/inner_product.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1,
          typename InputIterator2,
          typename OutputType>
@@ -53,5 +56,7 @@ OutputType inner_product(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

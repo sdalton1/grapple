@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/equal.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1, typename InputIterator2>
 bool equal(grapple_system &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 {
@@ -39,5 +42,7 @@ bool equal(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

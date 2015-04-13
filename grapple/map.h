@@ -1,5 +1,10 @@
+#pragma once
+
 #include <map>
 #include <string>
+
+namespace grapple
+{
 
 enum
 {
@@ -238,17 +243,17 @@ class grapple_thrust_mapper
         std::map<int,std::string> m;
 
         for(std::map<const std::string,int>::const_iterator iter = thrustMap.begin(); iter != thrustMap.end(); ++iter)
-          m.insert(std::pair<int,std::string>(iter->second, iter->first));
+            m.insert(std::pair<int,std::string>(iter->second, iter->first));
 
         return m;
     }
 
-  public:
+public:
 
     grapple_thrust_mapper(void)
     {
-      thrustMap = create_map();
-      thrustReverseMap = create_reverse_map();
+        thrustMap = create_map();
+        thrustReverseMap = create_reverse_map();
     }
 
     void insert(int index, const std::string& name)
@@ -261,14 +266,12 @@ class grapple_thrust_mapper
         return thrustReverseMap.find(index)->second;
     }
 
-  private:
+private:
 
     std::map<std::string,int> thrustMap;
     std::map<int,std::string> thrustReverseMap;
 };
-
 static grapple_thrust_mapper grapple_thrust_map;
-
 
 enum grapple_type
 {
@@ -296,11 +299,11 @@ class grapple_system_mapper
         return m;
     }
 
-  public:
+public:
 
     grapple_system_mapper(void)
     {
-      systemMap = create_map();
+        systemMap = create_map();
     }
 
     std::string find(int index)
@@ -308,9 +311,16 @@ class grapple_system_mapper
         return systemMap.find(index)->second;
     }
 
-  private:
+private:
 
     std::map<int,std::string> systemMap;
 };
-
 static grapple_system_mapper grapple_system_map;
+
+void insert(int index, const std::string& name)
+{
+    grapple_thrust_map.insert(index, name);
+}
+
+} // end namespace grapple
+

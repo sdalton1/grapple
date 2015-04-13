@@ -24,6 +24,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/sort.h>
 
+namespace grapple
+{
+
 template<typename RandomAccessIterator>
 void sort(grapple_system &exec,
           RandomAccessIterator first,
@@ -175,3 +178,4 @@ ForwardIterator is_sorted_until(grapple_system &exec,
     return ret;
 }
 
+}

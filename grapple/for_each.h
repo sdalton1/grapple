@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/for_each.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename UnaryFunction>
 InputIterator for_each(grapple_system &exec,
@@ -46,5 +49,7 @@ InputIterator for_each_n(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

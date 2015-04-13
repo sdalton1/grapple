@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/reduce.h>
 
+namespace grapple
+{
+
 template<typename InputIterator>
 typename thrust::iterator_traits<InputIterator>::value_type
 reduce(grapple_system &exec, InputIterator first, InputIterator last)
@@ -127,3 +130,4 @@ reduce_by_key(grapple_system &exec,
     return ret;
 }
 
+}

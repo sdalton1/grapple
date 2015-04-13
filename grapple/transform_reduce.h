@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/transform_reduce.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename UnaryFunction,
          typename OutputType,
@@ -36,5 +39,7 @@ OutputType transform_reduce(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

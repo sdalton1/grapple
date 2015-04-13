@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/transform.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename OutputIterator,
          typename UnaryFunction>
@@ -107,5 +110,7 @@ ForwardIterator transform_if(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

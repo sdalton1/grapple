@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/transform_scan.h>
 
+namespace grapple
+{
+
 template<typename InputIterator,
          typename OutputIterator,
          typename UnaryFunction,
@@ -55,5 +58,7 @@ OutputIterator transform_exclusive_scan(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

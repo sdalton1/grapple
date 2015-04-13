@@ -19,6 +19,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/merge.h>
 
+namespace grapple
+{
+
 template<typename InputIterator1,
          typename InputIterator2,
          typename OutputIterator>
@@ -93,5 +96,7 @@ merge_by_key(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 

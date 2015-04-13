@@ -3,6 +3,9 @@
 
 // grapple intercept file
 
+namespace grapple
+{
+
 // define complex function markers
 enum
 {
@@ -17,9 +20,9 @@ struct example_grapple_init
 {
     example_grapple_init(void)
     {
-        grapple_map.insert(THRUST_EXAMPLE_1, "thrust_example_1");
-        grapple_map.insert(THRUST_EXAMPLE_2, "thrust_example_2");
-        grapple_map.insert(THRUST_EXAMPLE_3, "thrust_example_3");
+        grapple::insert(THRUST_EXAMPLE_1, "thrust_example_1");
+        grapple::insert(THRUST_EXAMPLE_2, "thrust_example_2");
+        grapple::insert(THRUST_EXAMPLE_3, "thrust_example_3");
     }
 };
 static example_grapple_init static_example;
@@ -29,7 +32,7 @@ template<typename Array>
 void thrust_example_1(grapple_system& exec, Array& keys)
 {
     exec.start(THRUST_EXAMPLE_1);
-    thrust_example_1(exec.policy(), keys);
+    ::thrust_example_1(exec.policy(get_system(keys.begin())), keys);
     exec.stop();
 }
 
@@ -37,7 +40,7 @@ template<typename Array>
 void thrust_example_2(grapple_system& exec, Array& keys)
 {
     exec.start(THRUST_EXAMPLE_2);
-    thrust_example_2(exec.policy(), keys);
+    ::thrust_example_2(exec.policy(get_system(keys.begin())), keys);
     exec.stop();
 }
 
@@ -45,7 +48,9 @@ template<typename Array>
 void thrust_example_3(grapple_system& exec, Array& keys)
 {
     exec.start(THRUST_EXAMPLE_3);
-    thrust_example_3(exec.policy(), keys);
+    ::thrust_example_3(exec.policy(get_system(keys.begin())), keys);
     exec.stop();
+}
+
 }
 

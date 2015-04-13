@@ -20,6 +20,9 @@
 #include <thrust/detail/config.h>
 #include <thrust/unique.h>
 
+namespace grapple
+{
+
 template<typename ForwardIterator>
 ForwardIterator unique(grapple_system &exec,
                        ForwardIterator first,
@@ -154,5 +157,7 @@ unique_by_key_copy(grapple_system &exec,
     exec.stop();
 
     return ret;
+}
+
 }
 
