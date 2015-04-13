@@ -62,6 +62,8 @@ public:
 
     void print(void);
 
+    Parent& policy(void);
+
     thrust::detail::execute_with_allocator<grapple_system, thrust::system::cpp::detail::execution_policy>
     policy(thrust::cpp::tag);
 

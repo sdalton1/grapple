@@ -150,6 +150,11 @@ void grapple_system::deallocate(char *ptr, size_t num_bytes)
     }
 }
 
+typename grapple_system::Parent& grapple_system::policy(void)
+{
+    return static_cast<Parent&>(*this);
+}
+
 thrust::detail::execute_with_allocator<grapple_system, thrust::system::cpp::detail::execution_policy>
 grapple_system::policy(thrust::cpp::tag)
 {
