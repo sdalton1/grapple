@@ -14,8 +14,8 @@ void initialize(thrust::device_vector<float>& v)
         v[i] = dist(rng) / 2.0f;
 }
 
-template<typename Policy, typename Array>
-void thrust_example_1(const Policy& exec, Array& keys)
+template<typename DerivedPolicy, typename Array>
+void thrust_example_1(thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     Array values(keys.size());
     initialize(keys);
@@ -25,8 +25,19 @@ void thrust_example_1(const Policy& exec, Array& keys)
     thrust::adjacent_difference(exec, keys.begin(), keys.end(), values.begin());
 }
 
-template<typename Policy, typename Array>
-void thrust_example_2(const Policy& exec, Array& keys)
+template<typename DerivedPolicy, typename Array>
+void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+{
+    Array values(keys.size());
+    initialize(keys);
+
+    thrust::sort(exec, keys.begin(), keys.end());
+    thrust::reduce(exec, keys.begin(), keys.end());
+    thrust::adjacent_difference(exec, keys.begin(), keys.end(), values.begin());
+}
+
+template<typename DerivedPolicy, typename Array>
+void thrust_example_2(thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     initialize(keys);
 
@@ -35,7 +46,16 @@ void thrust_example_2(const Policy& exec, Array& keys)
 }
 
 template<typename DerivedPolicy, typename Array>
-void thrust_example_3(const thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
+void thrust_example_2(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+{
+    initialize(keys);
+
+    thrust::sort(exec, keys.begin(), keys.end());
+    thrust::unique(exec, keys.begin(), keys.end());
+}
+
+template<typename DerivedPolicy, typename Array>
+void thrust_example_3(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
 {
     DerivedPolicy& derived(thrust::detail::derived_cast(thrust::detail::strip_const(exec)));
 

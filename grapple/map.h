@@ -3,9 +3,6 @@
 #include <map>
 #include <string>
 
-namespace grapple
-{
-
 enum
 {
     THRUST_ADJACENT_DIFFERENCE = 1<<20,
@@ -119,6 +116,9 @@ enum
 
     THRUST_LAST_KEY,
 };
+
+namespace grapple
+{
 
 class grapple_thrust_mapper
 {
