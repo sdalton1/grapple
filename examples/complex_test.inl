@@ -5,8 +5,13 @@
 #include <thrust/sort.h>
 #include <thrust/unique.h>
 
-// base file
-void initialize(thrust::device_vector<float>& v)
+namespace example
+{
+namespace detail
+{
+
+template<typename DerivedPolicy, typename Array>
+void initialize(thrust::execution_policy<DerivedPolicy>& exec, Array& v)
 {
     thrust::default_random_engine rng(123456);
     thrust::uniform_int_distribution<int> dist(2, 19);
@@ -18,18 +23,7 @@ template<typename DerivedPolicy, typename Array>
 void thrust_example_1(thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
     Array values(keys.size());
-    initialize(keys);
-
-    thrust::sort(exec, keys.begin(), keys.end());
-    thrust::reduce(exec, keys.begin(), keys.end());
-    thrust::adjacent_difference(exec, keys.begin(), keys.end(), values.begin());
-}
-
-template<typename DerivedPolicy, typename Array>
-void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
-{
-    Array values(keys.size());
-    initialize(keys);
+    example::initialize(thrust::detail::derived_cast(exec), keys);
 
     thrust::sort(exec, keys.begin(), keys.end());
     thrust::reduce(exec, keys.begin(), keys.end());
@@ -39,48 +33,73 @@ void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>
 template<typename DerivedPolicy, typename Array>
 void thrust_example_2(thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
 {
-    initialize(keys);
+    example::initialize(thrust::detail::derived_cast(exec), keys);
 
     thrust::sort(exec, keys.begin(), keys.end());
     thrust::unique(exec, keys.begin(), keys.end());
+}
+
+template<typename DerivedPolicy, typename Array>
+void thrust_example_3(thrust::execution_policy<DerivedPolicy>& exec, Array& keys)
+{
+    example::thrust_example_1(thrust::detail::derived_cast(exec), keys);
+    example::thrust_example_2(thrust::detail::derived_cast(exec), keys);
+}
+
+} // end namespace detail
+
+template<typename DerivedPolicy, typename Array>
+void initialize(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+{
+    using example::detail::initialize;
+
+    initialize(thrust::detail::derived_cast(thrust::detail::strip_const(exec)), keys);
+}
+
+template<typename DerivedPolicy, typename Array>
+void thrust_example_1(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
+{
+    using example::detail::thrust_example_1;
+
+    thrust_example_1(thrust::detail::derived_cast(thrust::detail::strip_const(exec)), keys);
 }
 
 template<typename DerivedPolicy, typename Array>
 void thrust_example_2(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
 {
-    initialize(keys);
+    using example::detail::thrust_example_2;
 
-    thrust::sort(exec, keys.begin(), keys.end());
-    thrust::unique(exec, keys.begin(), keys.end());
+    thrust_example_2(thrust::detail::derived_cast(thrust::detail::strip_const(exec)), keys);
 }
 
 template<typename DerivedPolicy, typename Array>
 void thrust_example_3(const thrust::detail::execution_policy_base<DerivedPolicy>& exec, Array& keys)
 {
-    DerivedPolicy& derived(thrust::detail::derived_cast(thrust::detail::strip_const(exec)));
+    using example::detail::thrust_example_3;
 
-    thrust_example_1(derived, keys);
-    thrust_example_2(derived, keys);
+    thrust_example_3(thrust::detail::derived_cast(thrust::detail::strip_const(exec)), keys);
 }
 
 template<typename Array>
 void thrust_example_1(Array& keys)
 {
-  typename thrust::iterator_system<typename Array::iterator>::type system;
-  thrust_example_1(system, keys);
+    typename thrust::iterator_system<typename Array::iterator>::type system;
+    example::thrust_example_1(system, keys);
 }
 
 template<typename Array>
 void thrust_example_2(Array& keys)
 {
-  typename thrust::iterator_system<typename Array::iterator>::type system;
-  thrust_example_2(system, keys);
+    typename thrust::iterator_system<typename Array::iterator>::type system;
+    example::thrust_example_2(system, keys);
 }
 
 template<typename Array>
 void thrust_example_3(Array& keys)
 {
-  typename thrust::iterator_system<typename Array::iterator>::type system;
-  thrust_example_3(system, keys);
+    typename thrust::iterator_system<typename Array::iterator>::type system;
+    example::thrust_example_3(system, keys);
 }
+
+} // end namespace example
 

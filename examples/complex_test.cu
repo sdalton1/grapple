@@ -11,9 +11,9 @@ int main(void)
     // call tests normally
     {
         std::cout << "Executing examples...";
-        thrust_example_1(keys);
-        thrust_example_2(keys);
-        thrust_example_3(keys);
+        example::thrust_example_1(keys);
+        example::thrust_example_2(keys);
+        example::thrust_example_3(keys);
         std::cout << "complete!" << std::endl;
     }
 
@@ -24,9 +24,9 @@ int main(void)
         grapple::grapple_system exec;
 
         std::cout << "Executing examples with grapple...";
-        thrust_example_1(exec, keys);
-        thrust_example_2(exec, keys);
-        thrust_example_3(exec, keys);
+        example::thrust_example_1(exec, keys);
+        example::thrust_example_2(exec, keys);
+        example::thrust_example_3(exec, keys);
         std::cout << "complete!" << std::endl;
 
         // grapple performance printed automatically during destructor
