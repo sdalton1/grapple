@@ -15,17 +15,23 @@
 */
 #pragma once
 
-#include <cuda.h>
 
 #include <thrust/execution_policy.h>
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 #include <thrust/device_allocator.h>
 
+#ifdef __CUDACC__
+#include <cuda.h>
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
+#include <grapple/gputimer.h>
+#else
+#include <grapple/cputimer.h>
+#endif
+
 #include <thrust/system/omp/execution_policy.h>
-#include <thrust/system/tbb/execution_policy.h>
+// #include <thrust/system/tbb/execution_policy.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -50,7 +56,6 @@ private:
     int   func_id;
     int   stack_frame;
     float time;
-    cudaStream_t stream;
 
 public:
 
@@ -96,10 +101,7 @@ grapple_system::~grapple_system(void)
 void grapple_system::start(const int func_num)
 {
     func_index[stack_frame] = func_num;
-
-    cudaEventCreate(&tstart[stack_frame]);
-    cudaEventCreate(&tstop[stack_frame]);
-    cudaEventRecord(tstart[stack_frame++], 0);
+    tlist[stack_frame++].Start();
 
     data.push_back(grapple_data());
     stack.push(abs_index++);
@@ -107,10 +109,8 @@ void grapple_system::start(const int func_num)
 
 void grapple_system::stop(void)
 {
-    float elapsed_time = 0.0;
-    cudaEventRecord(tstop[--stack_frame], 0);
-    cudaEventSynchronize(tstop[stack_frame]);
-    cudaEventElapsedTime(&elapsed_time, tstart[stack_frame], tstop[stack_frame]);
+    tlist[--stack_frame].Stop();
+    float elapsed_time = tlist[stack_frame].milliseconds_elapsed();
 
     int index = stack.top();
     data[index].set_data(system, stack_frame, func_index[stack_frame], elapsed_time);
@@ -142,15 +142,18 @@ void grapple_system::deallocate(char *ptr, size_t num_bytes)
 {
     switch(system)
     {
+    #ifdef __CUDACC__
     case GRAPPLE_CUDA :
         thrust::cuda::free(thrust::cuda::pointer<char>(ptr));
         break;
+    #endif
     default:
         thrust::free(thrust::cpp::tag(), ptr);
     }
 }
 
-typename grapple_system::Parent& grapple_system::policy(void)
+typename grapple_system::Parent&
+grapple_system::policy(void)
 {
     return static_cast<Parent&>(*this);
 }
@@ -169,11 +172,19 @@ grapple_system::policy(thrust::omp::tag)
     return thrust::omp::par(*this);
 }
 
-thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
-grapple_system::policy(thrust::tbb::tag)
+// thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
+// grapple_system::policy(thrust::tbb::tag)
+// {
+//     system = GRAPPLE_TBB;
+//     return thrust::tbb::par(*this);
+// }
+
+#ifdef __CUDACC__
+thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
+grapple_system::policy(thrust::cuda::tag)
 {
-    system = GRAPPLE_TBB;
-    return thrust::tbb::par(*this);
+    system = GRAPPLE_CUDA;
+    return thrust::cuda::par(*this);
 }
 
 template<typename System>
@@ -191,13 +202,7 @@ grapple_system::policy(thrust::system::cuda::detail::cross_system<System,thrust:
     system = GRAPPLE_H2D;
     return policy;
 }
-
-thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
-grapple_system::policy(thrust::cuda::tag)
-{
-    system = GRAPPLE_CUDA;
-    return thrust::cuda::par(*this);
-}
+#endif
 
 void grapple_system::print(void)
 {

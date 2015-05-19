@@ -15,14 +15,19 @@
 */
 #pragma once
 
-#include <cuda.h>
-
 #include <thrust/execution_policy.h>
 
+#ifdef __CUDACC__
+#include <cuda.h>
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
+#include <grapple/gputimer.h>
+#else
+#include <grapple/cputimer.h>
+#endif
+
 #include <thrust/system/omp/execution_policy.h>
-#include <thrust/system/tbb/execution_policy.h>
+// #include <thrust/system/tbb/execution_policy.h>
 
 #include <cstdlib>
 #include <stack>
@@ -70,8 +75,12 @@ public:
     thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
     policy(thrust::omp::tag);
 
-    thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
-    policy(thrust::tbb::tag);
+    // thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
+    // policy(thrust::tbb::tag);
+
+#ifdef __CUDACC__
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
+    policy(thrust::cuda::tag);
 
     template<typename System>
     thrust::system::cuda::detail::cross_system<thrust::cuda::tag,System>
@@ -80,20 +89,17 @@ public:
     template<typename System>
     thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag>
     policy(thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag> policy);
-
-    thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
-    policy(thrust::cuda::tag);
+#endif
 
 protected:
 
     const static size_t STACK_SIZE = 100;
-    cudaEvent_t tstart[STACK_SIZE];
-    cudaEvent_t tstop[STACK_SIZE];
+    timer tlist[STACK_SIZE];
 
     int func_index[STACK_SIZE];
     int stack_frame;
     int abs_index;
-    grapple_type system;
+    enum grapple_type system;
 
     std::stack<int> stack;
 };
