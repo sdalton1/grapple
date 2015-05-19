@@ -34,6 +34,11 @@
 #include <iostream>
 #include <string>
 
+#include <cstdio>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 namespace grapple
 {
 

@@ -25,10 +25,6 @@
 #include <thrust/system/tbb/execution_policy.h>
 #endif
 
-#include <cstdlib>
-#include <stack>
-#include <vector>
-
 #include <grapple/map.h>
 
 #ifdef __CUDACC__
@@ -37,6 +33,10 @@
 #else
 #include <grapple/cputimer.h>
 #endif
+
+#include <cstdlib>
+#include <stack>
+#include <vector>
 
 namespace grapple
 {
