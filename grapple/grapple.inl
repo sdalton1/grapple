@@ -15,35 +15,43 @@
 */
 #pragma once
 
-
-#include <thrust/execution_policy.h>
-#include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 #include <thrust/device_allocator.h>
+#include <thrust/execution_policy.h>
+#include <thrust/host_vector.h>
+#include <thrust/version.h>
 
-#ifdef __CUDACC__
-#include <cuda.h>
+#if THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
+// ensure thrust::cuda::free and thrust::cuda::pointer are available
 #include <thrust/system/cuda/vector.h>
 #include <thrust/system/cuda/execution_policy.h>
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_OMP
+#include <thrust/system/omp/execution_policy.h>
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_TBB
+#include <thrust/system/tbb/execution_policy.h>
+#endif
+
+#include <grapple/map.h>
+#include <grapple/system_select.h>
+#include <grapple/thrust.h>
+#include <grapple/utils.h>
+
+#ifdef __CUDACC__
 #include <grapple/gputimer.h>
 #else
 #include <grapple/cputimer.h>
 #endif
 
-#include <thrust/system/omp/execution_policy.h>
-// #include <thrust/system/tbb/execution_policy.h>
-
+#include <algorithm>
 #include <cassert>
+#include <cstdarg>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <stack>
+#include <typeinfo>
 #include <vector>
-
-#include <grapple/map.h>
-#include <grapple/system_select.h>
-#include <grapple/thrust.h>
 
 namespace grapple
 {
@@ -61,7 +69,9 @@ public:
 
     int mem_size;
 
-    grapple_data(void) : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), time(0.0), mem_size(0) {}
+    grapple_data(void)
+      : system(GRAPPLE_CPP), func_id(-1), stack_frame(0), time(0.0), mem_size(0)
+    {}
 
     void set_data(grapple_type stack_system, int stack_index, int func_index, float elapsed_time)
     {
@@ -90,6 +100,7 @@ public:
 grapple_system::grapple_system(void)
     : Parent(), stack_frame(0), abs_index(0), system(GRAPPLE_CPP)
 {
+    print_config();
     data.reserve(100);
 }
 
@@ -127,9 +138,11 @@ char * grapple_system::allocate(std::ptrdiff_t num_bytes, bool service)
     {
         switch(system)
         {
+        #ifdef __CUDACC__
         case GRAPPLE_CUDA :
             ret = thrust::device_malloc<char>(num_bytes).get();
             break;
+        #endif
         default:
             ret = thrust::malloc<char>(thrust::cpp::tag(), num_bytes).get();
         }
@@ -165,21 +178,7 @@ grapple_system::policy(thrust::cpp::tag)
     return thrust::cpp::par(*this);
 }
 
-thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
-grapple_system::policy(thrust::omp::tag)
-{
-    system = GRAPPLE_OMP;
-    return thrust::omp::par(*this);
-}
-
-// thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
-// grapple_system::policy(thrust::tbb::tag)
-// {
-//     system = GRAPPLE_TBB;
-//     return thrust::tbb::par(*this);
-// }
-
-#ifdef __CUDACC__
+#if THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
 thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
 grapple_system::policy(thrust::cuda::tag)
 {
@@ -201,6 +200,20 @@ grapple_system::policy(thrust::system::cuda::detail::cross_system<System,thrust:
 {
     system = GRAPPLE_H2D;
     return policy;
+}
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_OMP
+thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
+grapple_system::policy(thrust::omp::tag)
+{
+    system = GRAPPLE_OMP;
+    return thrust::omp::par(*this);
+}
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_TBB
+thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
+grapple_system::policy(thrust::tbb::tag)
+{
+    system = GRAPPLE_TBB;
+    return thrust::tbb::par(*this);
 }
 #endif
 

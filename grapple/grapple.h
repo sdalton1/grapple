@@ -17,23 +17,26 @@
 
 #include <thrust/execution_policy.h>
 
-#ifdef __CUDACC__
-#include <cuda.h>
-#include <thrust/system/cuda/vector.h>
+#if THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
 #include <thrust/system/cuda/execution_policy.h>
-#include <grapple/gputimer.h>
-#else
-#include <grapple/cputimer.h>
-#endif
-
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_OMP
 #include <thrust/system/omp/execution_policy.h>
-// #include <thrust/system/tbb/execution_policy.h>
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_TBB
+#include <thrust/system/tbb/execution_policy.h>
+#endif
 
 #include <cstdlib>
 #include <stack>
 #include <vector>
 
 #include <grapple/map.h>
+
+#ifdef __CUDACC__
+#include <thrust/system/cuda/execution_policy.h>
+#include <grapple/gputimer.h>
+#else
+#include <grapple/cputimer.h>
+#endif
 
 namespace grapple
 {
@@ -72,13 +75,7 @@ public:
     thrust::detail::execute_with_allocator<grapple_system, thrust::system::cpp::detail::execution_policy>
     policy(thrust::cpp::tag);
 
-    thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
-    policy(thrust::omp::tag);
-
-    // thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
-    // policy(thrust::tbb::tag);
-
-#ifdef __CUDACC__
+#if THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
     thrust::detail::execute_with_allocator<grapple_system, thrust::system::cuda::detail::execute_on_stream_base>
     policy(thrust::cuda::tag);
 
@@ -89,6 +86,12 @@ public:
     template<typename System>
     thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag>
     policy(thrust::system::cuda::detail::cross_system<System,thrust::cuda::tag> policy);
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_OMP
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::omp::detail::execution_policy>
+    policy(thrust::omp::tag);
+#elif THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_TBB
+    thrust::detail::execute_with_allocator<grapple_system, thrust::system::tbb::detail::execution_policy>
+    policy(thrust::tbb::tag);
 #endif
 
 protected:

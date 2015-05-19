@@ -22,31 +22,42 @@
 
 class timer
 {
+  private:
     cudaEvent_t start;
     cudaEvent_t end;
 
-    public:
-    timer()
+  public:
+    timer(void)
     {
         cudaEventCreate(&start);
         cudaEventCreate(&end);
-        cudaEventRecord(start,0);
     }
 
-    ~timer()
+    ~timer(void)
     {
         cudaEventDestroy(start);
         cudaEventDestroy(end);
     }
 
-    float milliseconds_elapsed()
+    void Start(void)
     {
-        float elapsed_time;
+        cudaEventRecord(start, 0);
+    }
+
+    void Stop(void)
+    {
         cudaEventRecord(end, 0);
         cudaEventSynchronize(end);
+    }
+
+    float milliseconds_elapsed(void)
+    {
+        float elapsed_time;
         cudaEventElapsedTime(&elapsed_time, start, end);
+
         return elapsed_time;
     }
+
     float seconds_elapsed()
     {
         return milliseconds_elapsed() / 1000.0;
